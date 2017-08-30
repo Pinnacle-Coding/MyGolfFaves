@@ -1,6 +1,7 @@
 
 var offers = require('./OfferControl.js');
 var affiliates = require('./AffiliateControl.js');
+var options = require('./OptionControl.js');
 var xml2jsParseString = require('react-native-xml2js').parseString;
 
 var user = undefined;
@@ -68,6 +69,7 @@ module.exports = {
         }
         else {
           var userID = 3478; // TODO: result.memberID;
+          console.log('Logged in user: '+userID);
           sendRequest('http://business.mygolffaves.com/ws/mobilePublicService.cfc?method=getMemberAccount&UID=1&PWD=mob!leMGF&memberID='+userID, function (err, result) {
             if (err) {
               callback(err, 'An error occurred');
@@ -79,6 +81,7 @@ module.exports = {
               callback(null, result.message);
             }
             else {
+              console.log('User profile loaded.');
               user = result.Details[0];
               affiliates.refresh(userID, function (err, message) {
                 if (err) {
@@ -88,6 +91,7 @@ module.exports = {
                   callback(null, message);
                 }
                 else {
+                  console.log('Affiliates loaded.');
                   offers.refresh(userID, user, function (err, message) {
                     if (err) {
                       callback(err, 'An error occurred')
@@ -96,7 +100,19 @@ module.exports = {
                       callback(null, message);
                     }
                     else {
-                      callback(null, null);
+                      console.log('Offers loaded.');
+                      options.refresh(function (err, message) {
+                        if (err) {
+                          callback(err, 'An error occurred')
+                        }
+                        else if (message) {
+                          callback(null, message);
+                        }
+                        else {
+                          console.log('Options loaded.');
+                          callback(null, null);
+                        }
+                      });
                     }
                   });
                 }

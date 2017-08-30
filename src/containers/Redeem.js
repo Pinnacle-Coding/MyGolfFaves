@@ -69,7 +69,7 @@ export default class Redeem extends Component {
         }
         else {
           this.setState({
-            modalText: 'Redeemed offer successfully!',
+            modalText: 'Redeemed offer successfully',
             showModal: true,
             exitModal: true
           });

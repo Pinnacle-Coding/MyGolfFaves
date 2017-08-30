@@ -203,23 +203,29 @@ export default class FavoriteGolfCourses extends Component {
   }
 
   saveNearbyAffliates() {
+    this.setState({
+      enableSearch: false
+    });
     affiliateCtrl.saveNearbyAffliates(authCtrl.getUser().memberID, this.state.nearbyAffiliates, function (err, message) {
       if (err) {
         this.setState({
           modalText: err,
-          showModal: true
+          showModal: true,
+          enableSearch: true
         });
       }
       else if (message) {
         this.setState({
           modalText: message,
-          showModal: true
+          showModal: true,
+          enableSearch: true
         });
       }
       else {
         this.setState({
-          modalText: 'Selections saved successfully!',
-          showModal: true
+          modalText: 'Selections saved successfully',
+          showModal: true,
+          enableSearch: true
         });
       }
     }.bind(this));
@@ -307,12 +313,11 @@ export default class FavoriteGolfCourses extends Component {
               <ModalSelector
                 style={{paddingTop: 2, width: 200}}
                 data={citiesMenu}
-                initValue="- Select a location -"
+                initValue={this.state.selectedCity}
                 onChange={(option) => this.getLocationFromCity(option.label)}>
                 <TextInput
                   style={{borderWidth:1, borderColor:'#ccc', padding:10, height:30}}
                   editable={false}
-                  placeholder="- Select a location -"
                   value={this.state.selectedCity} />
               </ModalSelector>
             </View>
@@ -391,7 +396,9 @@ export default class FavoriteGolfCourses extends Component {
             }
           />
 
-          <TouchableOpacity style={buttonStyles.solidGreenButton} onPress={() => this.saveNearbyAffliates()}>
+          <TouchableOpacity style={buttonStyles.solidGreenButton}
+            disabled={!this.state.enableSearch}
+            onPress={() => this.saveNearbyAffliates()}>
             <Text style={buttonStyles.solidGreenButtonText}>SAVE CHOICES</Text>
           </TouchableOpacity>
 

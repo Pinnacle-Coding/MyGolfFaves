@@ -93,7 +93,7 @@ export default class Offer extends Component {
       }
       else {
         this.setState({
-          modalText: 'Offer added to wallet!',
+          modalText: 'Offer added to wallet',
           showModal: true,
           exitModal: true,
           enableOffer: true

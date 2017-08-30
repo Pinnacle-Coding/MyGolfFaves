@@ -16,7 +16,10 @@ import Notifications from './src/containers/Notifications.js';
 
 import history from './src/utils/history.js';
 
+var optionCtrl = require('./src/services/OptionControl.js');
+
 export default class App extends Component {
+
   render() {
     return (
       <Router history={history}>
