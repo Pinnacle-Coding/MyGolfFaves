@@ -15,9 +15,6 @@
     },
     "packagerOpts": {
       "assetExts": ["ttf", "mp4"]
-    },
-    "ios": {
-      "supportsTablet": true
     }
   }
 }
