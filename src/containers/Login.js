@@ -48,7 +48,6 @@ export default class Login extends Component {
     authCtrl.login(this.state.username, this.state.password, function(err, message) {
       if (err) {
         this.setState({
-          password: '',
           modalText: err,
           showModal: true,
           enableLogin: true
@@ -56,7 +55,6 @@ export default class Login extends Component {
       }
       else if (message) {
         this.setState({
-          password: '',
           modalText: message,
           showModal: true,
           enableLogin: true
@@ -120,16 +118,16 @@ export default class Login extends Component {
           </Modal>
 
           <KeyboardAwareScrollView
-            style={styles.container}
+            style={styles.scrollContainer}
             resetScrollToCoords={{ x: 0, y: 0 }}
             extraHeight={175}
             keyboardOpeningTime={0}
             scrollEnabled={true}>
             <View flexDirection="row" style={styles.topText}>
-              <Text style={styles.noAccountTxt}>Don't have an account? </Text>
-              <Link to="/register">
-                <Text style={styles.createAccntLink}>Create an Account</Text>
-              </Link>
+              <Text style={{fontSize: 17, fontFamily: 'OpenSans-Regular'}}>Don't have an account? </Text>
+              <TouchableOpacity onPress={() => {history.push('/register')}}>
+                <Text style={styles.greenHighlightText}>Create an Account</Text>
+              </TouchableOpacity>
             </View>
 
             <TextInput
@@ -137,20 +135,20 @@ export default class Login extends Component {
               returnKeyType="next"
               onChangeText={(text) => this.setState({username: text})}
               onSubmitEditing={() => focusTextInput(this.refs.passwordInput)}
-              style={styles.input}
+              style={styles.inputField}
             />
 
             <TextInput
               placeholder="Password"
               secureTextEntry
               returnKeyType="go"
-              style={styles.input}
+              style={styles.inputField}
               ref='passwordInput'
               onChangeText={(text) => this.setState({password: text})}
             />
 
             <TouchableOpacity onPress={() => this.toggleStatus()}>
-              <Text style={styles.forgot}>Forgot Username/Password</Text>
+              <Text style={styles.greenHighlightTextMargin}>Forgot Username/Password</Text>
             </TouchableOpacity>
 
             <TouchableOpacity
@@ -166,7 +164,7 @@ export default class Login extends Component {
                   <TextInput
                     placeholder="Email Address"
                     returnKeyType="go"
-                    style={styles.input}
+                    style={styles.inputField}
                   />
 
                   <TouchableOpacity style={buttonStyles.solidGreenButton}>
@@ -186,32 +184,29 @@ import modalStyles from '../styles/modal.js';
 import textStyles from '../styles/text.js';
 import buttonStyles from '../styles/buttons.js';
 const styles = StyleSheet.create({
-  container: {
-    backgroundColor: '#efefef',
+  scrollContainer: {
+    flex: 1,
     padding: 30,
-    flex: 1
+    backgroundColor: '#efefef'
   },
-  noAccountTxt: {
-    fontSize: 17,
-    fontFamily: 'OpenSans-Regular'
-  },
-  createAccntLink: {
+  greenHighlightText: {
     color: '#509E2f',
     fontSize: 17,
     fontFamily: 'OpenSans-Regular'
   },
-  input: {
+  greenHighlightTextMargin: {
+    color: '#509E2f',
+    fontSize: 17,
+    fontFamily: 'OpenSans-Regular',
+    marginTop: 20
+  },
+  inputField: {
     height: 50,
-    backgroundColor: '#FFF',
+    opacity: 0.9,
     marginTop: 20,
     paddingHorizontal: 10,
-    opacity: 0.9,
-    fontSize: 20
-  },
-  forgot: {
-    color: '#509E2f',
-    fontSize: 17,
-    marginTop: 20,
-    fontFamily: 'OpenSans-Regular'
+    fontSize: 20,
+    fontFamily: 'OpenSans-Light',
+    backgroundColor: '#FFF'
   }
 });

@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, TextInput } from 'react-native';
+import { StyleSheet, View, TextInput, Text } from 'react-native';
 import { Font, AppLoading } from 'expo';
+
+import renderIf from '../utils/renderif.js';
 
 export default class TextField extends Component {
   state = {
@@ -40,13 +42,15 @@ export default class TextField extends Component {
 const styles = StyleSheet.create({
   textField: {
     height: 50,
-    backgroundColor: '#FFF',
-    marginTop: 20,
-    paddingHorizontal: 10,
     opacity: 0.9,
+    marginTop: 5,
+    marginBottom: 15,
+    paddingHorizontal: 10,
     fontSize: 20,
+    fontFamily: 'OpenSans-Light',
     borderStyle: 'solid',
     borderColor: 'lightgray',
-    borderWidth: 1
+    borderWidth: 1,
+    backgroundColor: '#FFF'
   }
 });

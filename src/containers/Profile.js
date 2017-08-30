@@ -2,85 +2,25 @@ import React, { Component } from 'react';
 import { StyleSheet, View, TouchableOpacity, Text, ScrollView } from 'react-native';
 import { Font, AppLoading } from 'expo';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { Form, Field } from 'simple-react-form';
 import Modal from 'react-native-modal';
 import Spinner from 'react-native-loading-spinner-overlay';
 
 import Header from '../components/Header.js';
+import TextField from '../components/TextField.js';
 
 import renderIf from '../utils/renderif.js';
 
 var authCtrl = require('../services/AuthControl.js');
 
-var t = require('tcomb-form-native');
-var Form = t.form.Form;
-var ProfileModel = t.struct({
-  firstName: t.String,
-  lastName: t.String,
-  zipCode: t.Number,
-  city: t.String,
-  state: t.String,
-  emailAddress: t.String,
-  birthYear: t.Number,
-  gender: t.enums({
-    M: 'Male',
-    F: 'Female'
-  }),
-  "howOftenDoYouPlayGolf?": t.enums({
-    F: 'Frequently',
-    L: 'Less Than 10 Times a Year',
-    N: 'New Golfer'
-  }),
-  "withWhomDoYouMostOftenPlayGolf?": t.struct({
-    businessAssociates: t.Boolean,
-    friends: t.Boolean,
-    spouse: t.Boolean,
-    "jr.Golfers": t.Boolean,
-  }),
-  username: t.String,
-});
-var ProfilePasswordModel = t.struct({
-  firstName: t.String,
-  lastName: t.String,
-  zipCode: t.Number,
-  city: t.String,
-  state: t.String,
-  emailAddress: t.String,
-  birthYear: t.Number,
-  gender: t.enums({
-    M: 'Male',
-    F: 'Female'
-  }),
-  "howOftenDoYouPlayGolf?": t.enums({
-    F: 'Frequently',
-    L: 'Less Than 10 Times a Year',
-    N: 'New Golfer'
-  }),
-  username: t.String,
-  "withWhomDoYouMostOftenPlayGolf?": t.struct({
-    businessAssociates: t.Boolean,
-    friends: t.Boolean,
-    spouse: t.Boolean,
-    "juniorGolfers": t.Boolean,
-  }),
-  currentPassword: t.String,
-  newPassword: t.String,
-  verifyPassword: t.String
-});
-
 export default class Profile extends Component {
-  constructor() {
-    super();
-    this.state = {
-      loaded: false,
-      showModal: false,
-      modalText: '',
-      enableUpdate: true,
-      showChangePassword: false,
-      formType: ProfileModel
-    };
-
-    this.onTogglePassword = this.onTogglePassword.bind(this);
-  }
+  state = {
+    loaded: false,
+    showModal: false,
+    modalText: '',
+    enableUpdate: true,
+    showChangePassword: false
+  };
 
   async componentDidMount() {
     await Font.loadAsync({
@@ -92,19 +32,14 @@ export default class Profile extends Component {
     })
   }
 
-  onTogglePassword() {
-    if (this.state.showChangePassword) {
-      this.setState({
-        formType: ProfileModel,
-        showChangePassword: false
-      });
-    }
-    else {
-      this.setState({
-        formType: ProfilePasswordModel,
-        showChangePassword: true
-      });
-    }
+  togglePassword() {
+    this.setState({
+      showChangePassword: !this.state.showChangePassword
+    });
+  }
+
+  updateUser() {
+
   }
 
   render() {
@@ -112,7 +47,7 @@ export default class Profile extends Component {
       return <AppLoading/>;
     }
     return (
-      <View style={styles.container}>
+      <View>
 
         <Header title="Profile"/>
         <View style={{borderBottomColor:'gray', borderBottomWidth:1, borderStyle: 'solid', padding:0}}/>
@@ -131,21 +66,103 @@ export default class Profile extends Component {
         </Modal>
 
         <KeyboardAwareScrollView
-        style={styles.scrollContainer}
-        resetScrollToCoords={{ x: 0, y: 0 }}
-        extraHeight={175}
-        keyboardOpeningTime={0}
-        scrollEnabled={true}>
-          <Form
-            ref="form"
-            type={this.state.formType}
-          />
-          <TouchableOpacity style={styles.button} onPress={this.onTogglePassword}>
-            <Text style={styles.buttonText}>Change Password</Text>
+          style={styles.scrollContainer}
+          resetScrollToCoords={{ x: 0, y: 0 }}
+          extraHeight={225}
+          keyboardOpeningTime={0}
+          scrollEnabled={true}>
+          <Form state={this.state.userForm} onChange={(state) => this.setState({userForm : state})}>
+            <View>
+              <Text style={styles.inputLabel}>First Name</Text>
+              <Field
+                fieldName='firstName'
+                placeholder='John'
+                returnKeyType='next'
+                type={TextField}/>
+              <Text style={styles.inputLabel}>Last Name</Text>
+              <Field
+                fieldName='lastName'
+                placeholder='Smith'
+                returnKeyType='next'
+                type={TextField}/>
+              <Text style={styles.inputLabel}>Zip Code</Text>
+              <Field
+                fieldName='zipCode'
+                placeholder='90001'
+                returnKeyType='next'
+                keyboardType='numeric'
+                type={TextField}/>
+              <Text style={styles.inputLabel}>City</Text>
+              <Field
+                fieldName='city'
+                placeholder='Los Angeles'
+                returnKeyType='next'
+                type={TextField}/>
+              <Text style={styles.inputLabel}>State</Text>
+              <Field
+                fieldName='State'
+                placeholder='CA'
+                returnKeyType='next'
+                type={TextField}/>
+              <Text style={styles.inputLabel}>Email Address</Text>
+              <Field
+                fieldName='emailAddress'
+                placeholder='john.smith@example.com'
+                returnKeyType='next'
+                type={TextField}/>
+              <Text style={styles.inputLabel}>Birth Year</Text>
+              <Field
+                fieldName='birthYear'
+                placeholder='1980'
+                returnKeyType='next'
+                keyboardType='numeric'
+                type={TextField}/>
+              <Text style={styles.inputLabel}>Username</Text>
+              <Field
+                fieldName='username'
+                placeholder='john_smith'
+                type={TextField}/>
+            </View>
+          </Form>
+
+          <TouchableOpacity
+            style={buttonStyles.solidGreenButton}
+            onPress={() => this.togglePassword()}>
+            <Text style={buttonStyles.solidGreenButtonText}>PASSWORD OPTIONS</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.button} onPress={this.onPress}>
-            <Text style={styles.buttonText}>Save</Text>
+
+          {
+            renderIf(this.state.showChangePassword)(
+              <View style={{marginTop: 25}}>
+                <Form state={this.state.passwordForm} onChange={(state) => this.setState({passwordForm : state})}>
+                  <View>
+                    <Text style={styles.inputLabel}>Current Password</Text>
+                    <Field
+                      fieldName='currentPassword'
+                      returnKeyType='next'
+                      type={TextField}/>
+                    <Text style={styles.inputLabel}>New Password</Text>
+                    <Field
+                      fieldName='newPassword'
+                      returnKeyType='next'
+                      type={TextField}/>
+                    <Text style={styles.inputLabel}>Verify Password</Text>
+                    <Field
+                      fieldName='verifyPassword'
+                      type={TextField}/>
+                  </View>
+                </Form>
+              </View>
+            )
+          }
+
+          <TouchableOpacity
+            disabled={!this.state.enableUpdate}
+            style={buttonStyles.solidGreenButton}
+            onPress={() => this.updateUser()}>
+            <Text style={buttonStyles.solidGreenButtonText}>UPDATE PROFILE</Text>
           </TouchableOpacity>
+
           <View style={{padding:100}}/>
         </KeyboardAwareScrollView>
       </View>
@@ -156,25 +173,11 @@ export default class Profile extends Component {
 import modalStyles from '../styles/modal.js';
 import buttonStyles from '../styles/buttons.js';
 const styles = StyleSheet.create({
-  container: {
-
-  },
   scrollContainer: {
     padding: 20
   },
-  buttonText: {
-    fontSize: 18,
-    color: 'white',
-    alignSelf: 'center'
-  },
-  button: {
-    height: 36,
-    backgroundColor: '#509E2f',
-    borderColor: '#509E2f',
-    borderWidth: 1,
-    borderRadius: 8,
-    marginBottom: 10,
-    alignSelf: 'stretch',
-    justifyContent: 'center'
+  inputLabel: {
+    fontFamily: 'OpenSans-Regular',
+    fontSize: 18
   }
 });

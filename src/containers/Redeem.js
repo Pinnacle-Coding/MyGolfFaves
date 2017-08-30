@@ -110,7 +110,7 @@ export default class Redeem extends Component {
         <KeyboardAwareScrollView
         style={styles.scrollContainer}
         resetScrollToCoords={{ x: 0, y: 0 }}
-        extraHeight={175}
+        extraHeight={225}
         keyboardOpeningTime={0}
         scrollEnabled={true}>
           <View style={{paddingTop: 10}}>
@@ -131,7 +131,7 @@ export default class Redeem extends Component {
                 ref='redemptionAmount'
                 fieldName='redemptionAmount'
                 placeholder='Amount'
-                keyboardType = 'numeric'
+                keyboardType='numeric'
                 type={TextField}/>
             </View>
           </Form>
