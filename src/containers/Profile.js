@@ -5,11 +5,11 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import Modal from 'react-native-modal';
 import Spinner from 'react-native-loading-spinner-overlay';
 
-import Header from './Header.js';
+import Header from '../components/Header.js';
 
 import renderIf from '../utils/renderif.js';
 
-var auth = require('../services/AuthControl.js');
+var authCtrl = require('../services/AuthControl.js');
 
 var t = require('tcomb-form-native');
 var Form = t.form.Form;

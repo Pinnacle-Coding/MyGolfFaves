@@ -2,17 +2,17 @@ import React, { Component } from 'react';
 import { StyleSheet, View} from 'react-native';
 import { Router, Route, Switch } from 'react-router-native';
 
-import Register from './src/components/Register.js';
-import Login from './src/components/Login.js';
-import Home from './src/components/Home.js';
-import Profile from './src/components/Profile.js';
-import Rewards from './src/components/Rewards.js';
-import FavoriteGolfCourses from './src/components/FavoriteGolfCourses.js';
-import Offers from './src/components/Offers.js';
-import Offer from './src/components/Offer.js';
-import Wallet from './src/components/Wallet.js';
-import Redeem from './src/components/Redeem.js';
-import Notifications from './src/components/Notifications.js';
+import Register from './src/containers/Register.js';
+import Login from './src/containers/Login.js';
+import Home from './src/containers/Home.js';
+import Profile from './src/containers/Profile.js';
+import Rewards from './src/containers/Rewards.js';
+import FavoriteGolfCourses from './src/containers/FavoriteGolfCourses.js';
+import Offers from './src/containers/Offers.js';
+import Offer from './src/containers/Offer.js';
+import Wallet from './src/containers/Wallet.js';
+import Redeem from './src/containers/Redeem.js';
+import Notifications from './src/containers/Notifications.js';
 
 import history from './src/utils/history.js';
 

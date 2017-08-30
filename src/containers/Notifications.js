@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import { StyleSheet, View, ScrollView, FlatList, Text } from 'react-native';
 import { Font, AppLoading } from 'expo';
 
-import renderIf from '../utils/renderif.js';
+import Header from '../components/Header.js';
 
-import Header from './Header.js';
+import renderIf from '../utils/renderif.js';
 
 var offerCtrl = require('../services/OfferControl.js');
 

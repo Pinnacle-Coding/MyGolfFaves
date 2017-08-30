@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, Text, ScrollView } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { Font, AppLoading } from 'expo';
 
-import Header from './Header.js'
+import Header from '../components/Header.js';
 
-export default class Rewards extends Component {
+export default class Boilerplate extends Component {
   state = {
     loaded: false
   };
@@ -24,23 +24,14 @@ export default class Rewards extends Component {
       return <AppLoading/>;
     }
     return (
-      <View style={styles.container}>
-        <Header title="Rewards"/>
+      <View>
+        <Header title="Placeholder"/>
         <View style={{borderBottomColor:'gray', borderBottomWidth:1, borderStyle: 'solid', padding:0}}/>
-        <View style={{
-        justifyContent: 'center',
-        alignItems: 'center'}}>
-          <Text style={{
-            fontFamily:'OpenSans-Regular', fontSize: 20, paddingTop: 40}}>
-            My Rewards Feature Coming Soon!</Text>
-        </View>
       </View>
     );
   }
 }
 
 const styles = StyleSheet.create({
-  container: {
 
-  }
 });

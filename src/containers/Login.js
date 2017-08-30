@@ -6,13 +6,13 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import Modal from 'react-native-modal';
 import Spinner from 'react-native-loading-spinner-overlay';
 
+import Header from '../components/Header.js';
+
 import focusTextInput from '../utils/TextInputManager.js';
 import renderIf from '../utils/renderif.js';
 import history from '../utils/history.js';
 
-import Header from './Header.js';
-
-var auth = require('../services/AuthControl.js');
+var authCtrl = require('../services/AuthControl.js');
 
 export default class Login extends Component {
   state = {
@@ -45,7 +45,7 @@ export default class Login extends Component {
     this.setState({
       enableLogin: false
     });
-    auth.login(this.state.username, this.state.password, function(err, message) {
+    authCtrl.login(this.state.username, this.state.password, function(err, message) {
       if (err) {
         this.setState({
           password: '',
@@ -74,7 +74,7 @@ export default class Login extends Component {
   }
 
   logout() {
-    auth.logout();
+    authCtrl.logout();
     this.forceUpdate();
   }
 
@@ -82,7 +82,7 @@ export default class Login extends Component {
       if (!this.state.loaded) {
         return <AppLoading/>;
       }
-      if (!auth.isAuthenticated) {
+      if (!authCtrl.isAuthenticated) {
         return (
           <View style={{flex: 1, flexDirection: 'column', justifyContent: 'space-between'}}>
             <Header title="Login"/>

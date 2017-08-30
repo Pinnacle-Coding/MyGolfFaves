@@ -1,16 +1,16 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, FlatList, Text, ScrollView, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, ScrollView, Text, FlatList, TouchableOpacity } from 'react-native';
 import { Font, AppLoading } from 'expo';
 import { Link } from 'react-router-native';
 import Modal from 'react-native-modal';
 
-import history from '../utils/history.js';
+import Header from '../components/Header.js';
 
-import Header from './Header.js';
+import history from '../utils/history.js';
 
 var offerCtrl = require('../services/OfferControl.js');
 
-export default class Offers extends Component {
+export default class Wallet extends Component {
   state = {
     loaded: false,
     showModal: false,
@@ -52,7 +52,7 @@ export default class Offers extends Component {
         });
       }
       else {
-        history.push('/offer');
+        history.push('/redeem');
       }
     }.bind(this));
   }
@@ -63,7 +63,7 @@ export default class Offers extends Component {
     }
     return (
       <View>
-        <Header title="Offers"/>
+        <Header title="Wallet"/>
         <View style={{borderBottomColor:'gray', borderBottomWidth:1, borderStyle: 'solid', padding:0}}/>
 
         <Modal isVisible={this.state.showModal}>
@@ -79,23 +79,17 @@ export default class Offers extends Component {
 
         <ScrollView>
           <FlatList
-            data={this.formatOffers(offerCtrl.getCurrentOffers())}
+            data={this.formatOffers(offerCtrl.getMemberWallet())}
             renderItem={
               ({item}) =>
               <View style={{padding: 10}}>
-                <View>
-                  <Text style={styles.itemTitle}>{item.companyName}</Text>
-                  <Text style={styles.itemText}><Text style={{fontWeight: 'bold'}}>Start Date:</Text> {item.startDate}</Text>
-                  <Text style={styles.itemText}><Text style={{fontWeight: 'bold'}}>End Date:</Text> {item.endDate}</Text>
-                  <Text style={styles.itemText}><Text style={{fontWeight: 'bold'}}>Distance:</Text> {item.distance} miles</Text>
-                  <Text style={styles.itemText}><Text style={{fontWeight: 'bold'}}>Offer:</Text> {item.offerTitle}</Text>
+                  <Text style={styles.itemTitle}>{item.companyName} - {item.offerTitle}</Text>
                   <TouchableOpacity style={buttonStyles.solidGreenButton} onPress={() =>  this.selectOffer(item.offerID)}>
                     {
-                      <Text style={buttonStyles.solidGreenButtonText}>VIEW DETAILS</Text>
+                      <Text style={buttonStyles.solidGreenButtonText}>REDEEM</Text>
                     }
                   </TouchableOpacity>
                   <View style={{borderBottomColor:'lightgray', borderBottomWidth:1, borderStyle: 'solid', padding:10}}/>
-                </View>
               </View>
             }
           />
@@ -110,11 +104,9 @@ import modalStyles from '../styles/modal.js';
 import buttonStyles from '../styles/buttons.js';
 const styles = StyleSheet.create({
   itemTitle: {
+    paddingTop: 10,
     fontSize: 28,
     fontFamily: 'OpenSans-Regular',
     paddingBottom: 5
-  },
-  itemText: {
-    padding: 5
   }
 });

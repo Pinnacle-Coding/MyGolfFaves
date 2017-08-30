@@ -4,8 +4,9 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import { Font, AppLoading } from 'expo';
 import { Link } from 'react-router-native';
 
+import Header from '../components/Header.js';
+
 import focusTextInput from '../utils/TextInputManager.js';
-import Header from './Header.js';
 
 export default class Register extends Component {
   constructor() {

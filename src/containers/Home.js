@@ -4,7 +4,7 @@ import { Font, AppLoading } from 'expo';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { Link } from 'react-router-native';
 
-import Header from './Header.js';
+import Header from '../components/Header.js';
 
 export default class Home extends Component {
   state = {

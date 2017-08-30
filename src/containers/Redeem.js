@@ -6,12 +6,11 @@ import { Form, Field } from 'simple-react-form';
 import Modal from 'react-native-modal';
 import Spinner from 'react-native-loading-spinner-overlay';
 
+import Header from '../components/Header.js';
+import TextField from '../components/TextField.js';
 
 import history from '../utils/history.js';
 import focusTextInput from '../utils/TextInputManager.js';
-
-import Header from './Header.js';
-import TextField from '../forms/TextField.js';
 
 var authCtrl = require('../services/AuthControl.js');
 var offerCtrl = require('../services/OfferControl.js');

@@ -6,10 +6,10 @@ import ModalSelector from 'react-native-modal-selector';
 import Modal from 'react-native-modal';
 import Spinner from 'react-native-loading-spinner-overlay';
 
+import Header from '../components/Header.js';
+
 import renderIf from '../utils/renderif.js';
 import zipcodes from '../utils/zipcodes.js';
-
-import Header from './Header.js';
 
 var authCtrl = require('../services/AuthControl.js');
 var affiliateCtrl = require('../services/AffiliateControl.js');
