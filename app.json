@@ -1,9 +1,9 @@
 {
   "expo": {
-    "name": "mygolffaves",
-    "description": "An empty new project",
+    "name": "MyGolfFaves",
+    "description": "Golfing rewards app",
     "slug": "mygolffaves",
-    "privacy": "public",
+    "privacy": "unlisted",
     "sdkVersion": "20.0.0",
     "version": "1.0.0",
     "orientation": "portrait",
