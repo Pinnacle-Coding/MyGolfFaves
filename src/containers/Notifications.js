@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, ScrollView, FlatList, Text } from 'react-native';
-import { Font, AppLoading } from 'expo';
 
 import Header from '../components/Header.js';
 
@@ -9,20 +8,6 @@ import renderIf from '../utils/renderif.js';
 var offerCtrl = require('../services/OfferControl.js');
 
 export default class Notifications extends Component {
-  state = {
-    loaded: false
-  };
-
-  async componentDidMount() {
-    await Font.loadAsync({
-      'OpenSans-Regular': require('../../assets/fonts/OpenSans-Regular.ttf'),
-      'OpenSans-Light': require('../../assets/fonts/OpenSans-Light.ttf'),
-    });
-    this.setState({
-      loaded: true
-    })
-  }
-
   formatOffers(rawOffers) {
     var newOffers = [];
     rawOffers.forEach(function (rawOffer) {
@@ -38,9 +23,6 @@ export default class Notifications extends Component {
   }
 
   render() {
-    if (!this.state.loaded) {
-      return <AppLoading/>;
-    }
     return (
       <View style={styles.container}>
         <Header title="Notifications"/>

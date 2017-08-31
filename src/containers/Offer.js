@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, Text, ScrollView, TouchableOpacity, Linking, Image, Platform } from 'react-native';
-import { Font, AppLoading } from 'expo';
 import Modal from 'react-native-modal';
 import Spinner from 'react-native-loading-spinner-overlay';
 
@@ -14,22 +13,11 @@ var affiliateCtrl = require('../services/AffiliateControl.js');
 
 export default class Offer extends Component {
   state = {
-    loaded: false,
     showModal: false,
     modalText: '',
     exitModal: false,
     enableOffer: true
   };
-
-  async componentDidMount() {
-    await Font.loadAsync({
-      'OpenSans-Regular': require('../../assets/fonts/OpenSans-Regular.ttf'),
-      'OpenSans-Light': require('../../assets/fonts/OpenSans-Light.ttf'),
-    });
-    this.setState({
-      loaded: true
-    })
-  }
 
   formatWebsite(website) {
     if (!website.startsWith('http')) {
@@ -103,9 +91,6 @@ export default class Offer extends Component {
   }
 
   render() {
-    if (!this.state.loaded) {
-      return <AppLoading/>;
-    }
     return (
       <View>
         <Header title="Offer"/>

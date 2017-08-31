@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, TextInput, TouchableOpacity, Text, Linking } from 'react-native';
-import { Font, AppLoading } from 'expo';
 import { Link } from 'react-router-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import Modal from 'react-native-modal';
@@ -16,7 +15,6 @@ var authCtrl = require('../services/AuthControl.js');
 
 export default class Login extends Component {
   state = {
-    loaded: false,
     showModal: false,
     modalText: '',
     enableLogin: true,
@@ -24,16 +22,6 @@ export default class Login extends Component {
     username: '',
     password: ''
   };
-
-  async componentDidMount() {
-    await Font.loadAsync({
-      'OpenSans-Regular': require('../../assets/fonts/OpenSans-Regular.ttf'),
-      'OpenSans-Light': require('../../assets/fonts/OpenSans-Light.ttf'),
-    });
-    this.setState({
-      loaded: true
-    })
-  }
 
   toggleStatus() {
     this.setState({
@@ -77,9 +65,6 @@ export default class Login extends Component {
   }
 
   render() {
-      if (!this.state.loaded) {
-        return <AppLoading/>;
-      }
       if (!authCtrl.isAuthenticated) {
         return (
           <View style={{flex: 1, flexDirection: 'column', justifyContent: 'space-between'}}>

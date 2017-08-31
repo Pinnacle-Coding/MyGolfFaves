@@ -1,33 +1,15 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, TextInput, Text } from 'react-native';
-import { Font, AppLoading } from 'expo';
 import ModalSelector from 'react-native-modal-selector';
 
 import renderIf from '../utils/renderif.js';
 
 export default class TextField extends Component {
-  state = {
-    loaded: false
-  };
-
-  async componentDidMount() {
-    await Font.loadAsync({
-      'OpenSans-Regular': require('../../assets/fonts/OpenSans-Regular.ttf'),
-      'OpenSans-Light': require('../../assets/fonts/OpenSans-Light.ttf'),
-    });
-    this.setState({
-      loaded: true
-    })
-  }
-
   render() {
-    if (!this.state.loaded) {
-      return <AppLoading/>;
-    }
     return (
       <View>
         <ModalSelector
-          style={{paddingTop: 12, width: this.props.passProps.width}}
+          style={{marginTop: 5, marginBottom: 15, width: this.props.passProps.width}}
           data={this.props.passProps.data}
           initValue={this.props.passProps.initValue}
           onChange={(option) => {this.setState({locationRadius: option.label})}}>

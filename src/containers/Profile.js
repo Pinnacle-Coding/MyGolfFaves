@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, TouchableOpacity, Text, ScrollView } from 'react-native';
-import { Font, AppLoading } from 'expo';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { Form, Field } from 'simple-react-form';
 import Modal from 'react-native-modal';
@@ -8,29 +7,20 @@ import Spinner from 'react-native-loading-spinner-overlay';
 
 import Header from '../components/Header.js';
 import TextField from '../components/TextField.js';
+import SelectorField from '../components/SelectorField.js';
 
 import renderIf from '../utils/renderif.js';
 
 var authCtrl = require('../services/AuthControl.js');
+var optionCtrl = require('../services/OptionControl.js');
 
 export default class Profile extends Component {
   state = {
-    loaded: false,
     showModal: false,
     modalText: '',
     enableUpdate: true,
     showChangePassword: false
   };
-
-  async componentDidMount() {
-    await Font.loadAsync({
-      'OpenSans-Regular': require('../../assets/fonts/OpenSans-Regular.ttf'),
-      'OpenSans-Light': require('../../assets/fonts/OpenSans-Light.ttf'),
-    });
-    this.setState({
-      loaded: true
-    })
-  }
 
   togglePassword() {
     this.setState({
@@ -38,14 +28,28 @@ export default class Profile extends Component {
     });
   }
 
+  formatOptions(options, title, labelKey) {
+    var menu = [
+      {
+        key: 0,
+        section: true,
+        label: title
+      }
+    ];
+    for (var i = 0; i < options.length; i++) {
+      menu.push({
+        key: menu.length,
+        label: options[i][labelKey]
+      });
+    }
+    return menu;
+  }
+
   updateUser() {
 
   }
 
   render() {
-    if (!this.state.loaded) {
-      return <AppLoading/>;
-    }
     return (
       <View>
 
@@ -79,12 +83,14 @@ export default class Profile extends Component {
                 placeholder='John'
                 returnKeyType='next'
                 type={TextField}/>
+
               <Text style={styles.inputLabel}>Last Name</Text>
               <Field
                 fieldName='lastName'
                 placeholder='Smith'
                 returnKeyType='next'
                 type={TextField}/>
+
               <Text style={styles.inputLabel}>Zip Code</Text>
               <Field
                 fieldName='zipCode'
@@ -92,24 +98,28 @@ export default class Profile extends Component {
                 returnKeyType='next'
                 keyboardType='numeric'
                 type={TextField}/>
+
               <Text style={styles.inputLabel}>City</Text>
               <Field
                 fieldName='city'
                 placeholder='Los Angeles'
                 returnKeyType='next'
                 type={TextField}/>
+
               <Text style={styles.inputLabel}>State</Text>
               <Field
                 fieldName='State'
                 placeholder='CA'
                 returnKeyType='next'
                 type={TextField}/>
+
               <Text style={styles.inputLabel}>Email Address</Text>
               <Field
                 fieldName='emailAddress'
                 placeholder='john.smith@example.com'
                 returnKeyType='next'
                 type={TextField}/>
+
               <Text style={styles.inputLabel}>Birth Year</Text>
               <Field
                 fieldName='birthYear'
@@ -117,6 +127,15 @@ export default class Profile extends Component {
                 returnKeyType='next'
                 keyboardType='numeric'
                 type={TextField}/>
+
+              <Text style={styles.inputLabel}>Gender</Text>
+              <Field
+                fieldName='gender'
+                width={200}
+                data={this.formatOptions(optionCtrl.getGenderTypes(), 'Gender', 'genderDescr')}
+                initValue='Male'
+                type={SelectorField}/>
+
               <Text style={styles.inputLabel}>Username</Text>
               <Field
                 fieldName='username'

@@ -9,29 +9,15 @@ import Header from '../components/Header.js';
 import focusTextInput from '../utils/TextInputManager.js';
 
 export default class Register extends Component {
-  constructor() {
-    super();
-    this.state = {
-      loaded: false,
-      firstName: '',
-      lastName: '',
-      email: '',
-      confirmEmail: '',
-      username: '',
-      password: '',
-      confirmPassword: ''
-    };
-  }
-
-  async componentDidMount() {
-    await Font.loadAsync({
-      'OpenSans-Regular': require('../../assets/fonts/OpenSans-Regular.ttf'),
-      'OpenSans-Light': require('../../assets/fonts/OpenSans-Light.ttf'),
-    });
-    this.setState({
-      loaded: true
-    })
-  }
+  state = {
+    firstName: '',
+    lastName: '',
+    email: '',
+    confirmEmail: '',
+    username: '',
+    password: '',
+    confirmPassword: ''
+  };
 
   createAccount() {
     if (!this.state.username || !this.state.password || !this.state.firstName || !this.state.lastName || !this.state.email) {
@@ -67,9 +53,6 @@ export default class Register extends Component {
       });
   }
   render() {
-      if (!this.state.loaded) {
-        return <AppLoading/>;
-      }
       return (
         <View style={{flex: 1, flexDirection: 'column', justifyContent: 'space-between'}}>
           <Header title="Create an Account"/>

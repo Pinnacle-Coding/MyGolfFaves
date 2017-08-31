@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, TouchableOpacity, Text } from 'react-native';
-import { Font, AppLoading } from 'expo';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { Form, Field } from 'simple-react-form';
 import Modal from 'react-native-modal';
@@ -17,7 +16,6 @@ var offerCtrl = require('../services/OfferControl.js');
 
 export default class Redeem extends Component {
   state = {
-    loaded: false,
     showModal: false,
     modalText: '',
     exitModal: false,
@@ -27,16 +25,6 @@ export default class Redeem extends Component {
       redemptionAmount: undefined
     }
   };
-
-  async componentDidMount() {
-    await Font.loadAsync({
-      'OpenSans-Regular': require('../../assets/fonts/OpenSans-Regular.ttf'),
-      'OpenSans-Light': require('../../assets/fonts/OpenSans-Light.ttf'),
-    });
-    this.setState({
-      loaded: true
-    })
-  }
 
   closeModal() {
     this.setState({showModal: false});
@@ -86,9 +74,6 @@ export default class Redeem extends Component {
   }
 
   render() {
-    if (!this.state.loaded) {
-      return <AppLoading/>;
-    }
     return (
       <View>
         <Header title="Redeem Offer"/>

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { StyleSheet, View} from 'react-native';
+import { Font, AppLoading } from 'expo';
 import { Router, Route, Switch } from 'react-router-native';
 
 import Register from './src/containers/Register.js';
@@ -19,8 +20,24 @@ import history from './src/utils/history.js';
 var optionCtrl = require('./src/services/OptionControl.js');
 
 export default class App extends Component {
+  state = {
+    fontsLoaded: false
+  };
+
+  async componentDidMount() {
+    await Font.loadAsync({
+      'OpenSans-Regular': require('./assets/fonts/OpenSans-Regular.ttf'),
+      'OpenSans-Light': require('./assets/fonts/OpenSans-Light.ttf'),
+    });
+    this.setState({
+      fontsLoaded: true
+    });
+  }
 
   render() {
+    if (!this.state.fontsLoaded) {
+      return <AppLoading/>;
+    }
     return (
       <Router history={history}>
         <Switch>

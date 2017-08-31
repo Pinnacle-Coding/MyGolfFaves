@@ -1,30 +1,12 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, ScrollView, Text, TouchableHighlight } from 'react-native';
-import { Font, AppLoading } from 'expo';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { Link } from 'react-router-native';
 
 import Header from '../components/Header.js';
 
 export default class Home extends Component {
-  state = {
-    loaded: false
-  };
-
-  async componentDidMount() {
-    await Font.loadAsync({
-      'OpenSans-Regular': require('../../assets/fonts/OpenSans-Regular.ttf'),
-      'OpenSans-Light': require('../../assets/fonts/OpenSans-Light.ttf'),
-    });
-    this.setState({
-      loaded: true
-    })
-  }
-
   render() {
-    if (!this.state.loaded) {
-      return <AppLoading/>;
-    }
     return (
       <View style={styles.container}>
         <Header title="Home"/>

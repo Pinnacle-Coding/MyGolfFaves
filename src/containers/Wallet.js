@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, ScrollView, Text, FlatList, TouchableOpacity } from 'react-native';
-import { Font, AppLoading } from 'expo';
 import { Link } from 'react-router-native';
 import Modal from 'react-native-modal';
 
@@ -12,20 +11,9 @@ var offerCtrl = require('../services/OfferControl.js');
 
 export default class Wallet extends Component {
   state = {
-    loaded: false,
     showModal: false,
     modalText: ''
   };
-
-  async componentDidMount() {
-    await Font.loadAsync({
-      'OpenSans-Regular': require('../../assets/fonts/OpenSans-Regular.ttf'),
-      'OpenSans-Light': require('../../assets/fonts/OpenSans-Light.ttf'),
-    });
-    this.setState({
-      loaded: true
-    })
-  }
 
   formatOffers(rawOffers) {
     var newOffers = [];
@@ -58,9 +46,6 @@ export default class Wallet extends Component {
   }
 
   render() {
-    if (!this.state.loaded) {
-      return <AppLoading/>;
-    }
     return (
       <View>
         <Header title="Wallet"/>

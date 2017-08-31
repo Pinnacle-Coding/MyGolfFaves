@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, ScrollView, Text, TouchableOpacity, TextInput, FlatList, Button, Linking } from 'react-native';
-import { Font, AppLoading, Location, Permissions } from 'expo';
+import { Location, Permissions } from 'expo';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import ModalSelector from 'react-native-modal-selector';
 import Modal from 'react-native-modal';
@@ -51,7 +51,6 @@ var citiesData = {
 
 export default class FavoriteGolfCourses extends Component {
   state = {
-    loaded: false,
     showModal: false,
     modalText: '',
     enableSearch: true,
@@ -65,16 +64,6 @@ export default class FavoriteGolfCourses extends Component {
     nearbyAffiliates: [],
     showSelectAll: true
   };
-
-  async componentDidMount() {
-    await Font.loadAsync({
-      'OpenSans-Regular': require('../../assets/fonts/OpenSans-Regular.ttf'),
-      'OpenSans-Light': require('../../assets/fonts/OpenSans-Light.ttf'),
-    });
-    this.setState({
-      loaded: true
-    });
-  }
 
   getLocationFromZipCode() {
     var zipcode = ""+this.state.selectedZipCode;
@@ -258,7 +247,7 @@ export default class FavoriteGolfCourses extends Component {
         key: 0,
         section: true,
         label: 'Cities'
-      },
+      }
     ];
     for (var k in citiesData) {
       if (citiesData.hasOwnProperty(k)) {
@@ -269,9 +258,6 @@ export default class FavoriteGolfCourses extends Component {
       }
     }
 
-    if (!this.state.loaded) {
-      return <AppLoading/>;
-    }
     return (
       <View style={{flex: 1, flexDirection: 'column'}}>
         <Header title="Favorites"/>
