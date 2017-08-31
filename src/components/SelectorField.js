@@ -12,13 +12,12 @@ export default class TextField extends Component {
           style={{marginTop: 5, marginBottom: 15, width: this.props.passProps.width}}
           data={this.props.passProps.data}
           initValue={this.props.passProps.initValue}
-          onChange={(option) => {this.setState({locationRadius: option.label})}}>
+          onChange={this.props.onChange}>
           <TextInput
             editable={false}
             style={{borderWidth:1, borderColor:'#ccc', padding: 10, height: 50}}
             placeholder={this.props.passProps.placeholder}
             onSubmitEditing={this.props.passProps.onSubmitEditing}
-            onChangeText={this.props.onChange}
             value={this.props.value}
             style={styles.textField}
           />
