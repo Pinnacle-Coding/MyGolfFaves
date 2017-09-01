@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { StyleSheet, View, ScrollView, Text, TouchableOpacity, TextInput, FlatList, Button, Linking } from 'react-native';
 import { Location, Permissions } from 'expo';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import ModalSelector from 'react-native-modal-selector';
+import SimplePicker from 'react-native-simple-picker';
 import Modal from 'react-native-modal';
 import Spinner from 'react-native-loading-spinner-overlay';
 
@@ -55,7 +55,6 @@ export default class FavoriteGolfCourses extends Component {
     modalText: '',
     enableSearch: true,
     selectedCity: 'Las Vegas',
-    selectedZipCodeInvalid: false,
     locationLat: citiesData['Las Vegas'].lat,
     locationLong: citiesData['Las Vegas'].long,
     locationRadius: '50',
@@ -72,14 +71,13 @@ export default class FavoriteGolfCourses extends Component {
       this.setState({
         locationOption: 0,
         locationLat: zipcodeData.lat,
-        locationLong: zipcodeData.long,
-        selectedZipCodeInvalid: false
+        locationLong: zipcodeData.long
       });
     }
     else {
       this.setState({
-        locationOption: 0,
-        selectedZipCodeInvalid: true
+        showModal: true,
+        modalText: 'Invalid US zip code entered. Using your last saved location instead.'
       });
     }
   }
@@ -117,12 +115,6 @@ export default class FavoriteGolfCourses extends Component {
     this.setState({
       enableSearch: false
     });
-    if (this.state.locationOption === 0 && this.state.selectedZipCodeInvalid) {
-      this.setState({
-        showModal: true,
-        modalText: 'Invalid US zip code entered. Using your last saved location instead.'
-      });
-    }
     var radius = this.state.ignoreRadius ? 100000 : this.state.locationRadius;
     affiliateCtrl.getNearbyAffiliates(authCtrl.getUser().memberID, this.state.locationLat, this.state.locationLong, radius, function (err, message, affiliates) {
       if (err) {
@@ -222,39 +214,11 @@ export default class FavoriteGolfCourses extends Component {
 
   render() {
 
-    var milesMenu = [
-      {
-        key: 0,
-        section: true,
-        label: 'Miles'
-      },
-      {
-        key: 1,
-        label: '50'
-      },
-      {
-        key: 2,
-        label: '100'
-      },
-      {
-        key: 3,
-        label: '150'
-      },
-    ];
-
-    var citiesMenu = [
-      {
-        key: 0,
-        section: true,
-        label: 'Cities'
-      }
-    ];
+    var milesMenu = ['50', '100', '150'];
+    var citiesMenu = [];
     for (var k in citiesData) {
       if (citiesData.hasOwnProperty(k)) {
-        citiesMenu.push({
-          key: citiesMenu.length,
-          label: k
-        });
+        citiesMenu.push(k);
       }
     }
 
@@ -283,7 +247,7 @@ export default class FavoriteGolfCourses extends Component {
 
             <Text style={{padding: 5, paddingLeft: 20, fontFamily:'OpenSans-Regular', fontSize: 16}}>{this.state.locationOption === 0 ? '\u2023' : '\u2022'} Location (click zip to change) </Text>
             <TextInput
-              style={{borderWidth:1, borderColor:'#ccc', padding:10, marginLeft: 35, height:30, width: 120}}
+              style={{borderWidth:1, borderColor:'#ccc', padding: 5, marginLeft: 35, lineHeight: 30, width: 120}}
               placeholder="00000"
               keyboardType = 'numeric'
               onChangeText={(text) => this.setState({selectedZipCode: text})}
@@ -296,16 +260,28 @@ export default class FavoriteGolfCourses extends Component {
 
             <View style={{flexDirection: 'row'}}>
               <Text style={{padding: 5, paddingLeft: 20, fontFamily:'OpenSans-Regular', fontSize: 16}}>{this.state.locationOption === 2 ? '\u2023' : '\u2022'} </Text>
-              <ModalSelector
-                style={{paddingTop: 2, width: 200}}
-                data={citiesMenu}
-                initValue='Las Vegas'
-                onChange={(option) => this.getLocationFromCity(option.label)}>
-                <TextInput
-                  style={{borderWidth:1, borderColor:'#ccc', padding:10, height:30}}
-                  editable={false}
-                  value={this.state.selectedCity} />
-              </ModalSelector>
+              <Text
+                style={{borderWidth: 1, borderColor:'#ccc', paddingLeft: 5, lineHeight: 30, width: 200, fontFamily:'OpenSans-Regular', fontSize: 16}}
+                onPress={() => {
+                  this.refs.cityPicker.show();
+                }}
+              >
+                {this.state.selectedCity}
+              </Text>
+              <SimplePicker
+                ref={'cityPicker'}
+                options={citiesMenu}
+                labels={citiesMenu}
+                initialOptionIndex={1}
+                buttonStyle={{
+                  fontSize: 16
+                }}
+                itemStyle={{
+                  fontSize: 25,
+                  fontWeight: 'bold'
+                }}
+                onSubmit={(option) => this.getLocationFromCity(option)}
+              />
             </View>
 
             <TouchableOpacity onPress={() => this.getLocationShowAll()}>
@@ -316,17 +292,27 @@ export default class FavoriteGolfCourses extends Component {
 
             <View style={{flexDirection: 'row'}}>
               <Text style={{padding: 5, paddingLeft: 20, paddingTop: 15, fontFamily:'OpenSans-Regular', fontSize: 16}}>{'\u2022'} Search within </Text>
-              <ModalSelector
-                style={{paddingTop: 12, width: 50}}
-                data={milesMenu}
-                initValue="50"
-                onChange={(option) => {this.setState({locationRadius: option.label})}}>
-                <TextInput
-                  style={{borderWidth:1, borderColor:'#ccc', padding:10, height:30}}
-                  editable={false}
-                  placeholder="50"
-                  value={this.state.locationRadius}/>
-              </ModalSelector>
+              <Text
+                style={{borderWidth: 1, borderColor:'#ccc', paddingLeft: 5, marginTop: 10, lineHeight: 30, width: 50, fontFamily:'OpenSans-Regular', fontSize: 16}}
+                onPress={() => {
+                  this.refs.milesPicker.show();
+                }}
+              >
+                {this.state.locationRadius}
+              </Text>
+              <SimplePicker
+                ref={'milesPicker'}
+                options={milesMenu}
+                labels={milesMenu}
+                buttonStyle={{
+                  fontSize: 16
+                }}
+                itemStyle={{
+                  fontSize: 25,
+                  fontWeight: 'bold'
+                }}
+                onSubmit={(option) => {this.setState({locationRadius: option})}}
+              />
               <Text style={{padding: 5, paddingTop: 15, fontFamily:'OpenSans-Regular', fontSize: 16}}> miles</Text>
             </View>
 

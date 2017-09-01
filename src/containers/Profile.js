@@ -222,14 +222,14 @@ export default class Profile extends Component {
               />
 
               <Text style={styles.inputLabel}>How often do you play golf?</Text>
-                <Text
-                  style={styles.pickerField}
-                  onPress={() => {
-                    this.refs.playGolfFrequencyPicker.show();
-                  }}
-                >
-                  {playGolfFrequencies.labels[playGolfFrequencies.options.indexOf(this.state.userFormPlayGolfFrequency)]}
-                </Text>
+              <Text
+                style={styles.pickerField}
+                onPress={() => {
+                  this.refs.playGolfFrequencyPicker.show();
+                }}
+              >
+                {playGolfFrequencies.labels[playGolfFrequencies.options.indexOf(this.state.userFormPlayGolfFrequency)]}
+              </Text>
               <SimplePicker
                 ref={'playGolfFrequencyPicker'}
                 options={playGolfFrequencies.options}
