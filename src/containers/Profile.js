@@ -10,7 +10,6 @@ import SimplePicker from 'react-native-simple-picker';
 import Header from '../components/Header.js';
 import TextField from '../components/TextField.js';
 import SecureTextField from '../components/SecureTextField.js';
-import SelectorField from '../components/SelectorField.js';
 
 import renderIf from '../utils/renderif.js';
 
