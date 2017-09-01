@@ -274,7 +274,8 @@ export default class FavoriteGolfCourses extends Component {
                 labels={citiesMenu}
                 initialOptionIndex={1}
                 buttonStyle={{
-                  fontSize: 16
+                  fontSize: 18,
+                  padding: 5
                 }}
                 itemStyle={{
                   fontSize: 25,
@@ -305,7 +306,8 @@ export default class FavoriteGolfCourses extends Component {
                 options={milesMenu}
                 labels={milesMenu}
                 buttonStyle={{
-                  fontSize: 16
+                  fontSize: 18,
+                  padding: 5
                 }}
                 itemStyle={{
                   fontSize: 25,

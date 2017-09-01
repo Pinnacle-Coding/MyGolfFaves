@@ -45,6 +45,44 @@ module.exports = {
       return user;
     },
 
+    updateUser: function (userInformation, callback) {
+      var addendum = '';
+
+      for (var k in userInformation) {
+        if (userInformation.hasOwnProperty(k)) {
+          addendum += '&' + k + '=' + userInformation[k]
+        }
+      }
+
+      sendRequest('http://business.mygolffaves.com/ws/mobilePublicService.cfc?method=updateMemberAccount&UID=1&PWD=mob!leMGF'+addendum, function (err, result) {
+        if (err) {
+          callback(err, 'An error occurred');
+        }
+        else if (result.fail) {
+          callback(null, result.fail);
+        }
+        else if (result.status !== 'success') {
+          callback(null, result.message);
+        }
+        else {
+          sendRequest('http://business.mygolffaves.com/ws/mobilePublicService.cfc?method=getMemberAccount&UID=1&PWD=mob!leMGF&memberID='+userInformation.memberID, function (err, result) {
+            if (err) {
+              callback(err, 'An error occurred');
+            }
+            else if (result.fail) {
+              callback(null, result.fail);
+            }
+            else if (result.status !== 'success') {
+              callback(null, result.message);
+            }
+            else {
+              callback(null, null);
+            }
+          });
+        }
+      });
+    }
+
     /**
      * Login function
      * @param {String} username The user's account name

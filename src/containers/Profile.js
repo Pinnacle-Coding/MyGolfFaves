@@ -25,15 +25,41 @@ export default class Profile extends Component {
     userFormNotificationTypes: []
   }; // Included: userForm, passwordForm
 
-  formatSelectList(golfPartners, selectedGolfPartners, keyName) {
+  formatSelectList(originalList, currentSelected, keyName) {
     var ret = [];
-    for (var i = 0; i < golfPartners.length; i++) {
-      var golfPartner = Object.assign({}, golfPartners[i]);
-      golfPartner.key = golfPartner[keyName];
-      golfPartner.selected =  selectedGolfPartners.indexOf(golfPartner.key) > -1;
-      ret.push(golfPartner);
+    for (var i = 0; i < originalList.length; i++) {
+      var originalObject = Object.assign({}, originalList[i]);
+      originalObject.key = originalObject[keyName];
+      originalObject.selected =  currentSelected.indexOf(originalObject.key) > -1;
+      ret.push(originalObject);
     }
     return ret;
+  }
+
+  formatSelectListToString(selectList) {
+    var ret = '';
+    for (var i = 0; i < selectList.length; i++) {
+      if (selectList[i].seelcted)
+        ret += selectList[i].key + ',';
+    }
+    return ret.slice(0, -1);
+  }
+
+  formatOptions(options, title, labelKey) {
+    var menu = [
+      {
+        key: 0,
+        section: true,
+        label: title
+      }
+    ];
+    for (var i = 0; i < options.length; i++) {
+      menu.push({
+        key: menu.length,
+        label: options[i][labelKey]
+      });
+    }
+    return menu;
   }
 
   componentDidMount() {
@@ -55,23 +81,6 @@ export default class Profile extends Component {
     this.setState({
       showChangePassword: !this.state.showChangePassword
     });
-  }
-
-  formatOptions(options, title, labelKey) {
-    var menu = [
-      {
-        key: 0,
-        section: true,
-        label: title
-      }
-    ];
-    for (var i = 0; i < options.length; i++) {
-      menu.push({
-        key: menu.length,
-        label: options[i][labelKey]
-      });
-    }
-    return menu;
   }
 
   unzipOptionsLabels(arr, optionName, labelName, initialOption) {
@@ -106,7 +115,48 @@ export default class Profile extends Component {
   }
 
   updateUser() {
-    // TODO: Compile forms and submit to AuthControl
+    this.setState({
+      enableUpdate: false
+    });
+    var userInformation = {};
+    userInformation.addressID = this.state.userForm.addressID;
+    userInformation.addressLine1 = this.state.userForm.addressLine1;
+    userInformation.birthYear =  this.state.userForm.birthYear;
+    userInformation.city = this.state.userForm.city;
+    userInformation.emailAddress = this.state.userForm.emailAddress;
+    userInformation.firstName = this.state.userForm.firstName;
+    userInformation.genderAbbr = this.state.userFormGender;
+    userInformation.golfPartnerID = formatSelectListToString(this.state.userFormGolfPartners);
+    userInformation.lastName = this.state.userForm.lastName;
+    userInformation.memberID = this.state.userForm.memberID;
+    userInformation.mobilePhone = this.state.userForm.mobilePhone;
+    userInformation.notificationTypeID = formatSelectListToString(this.state.userFormNotificationTypes);
+    userInformation.playGolfFrequencyID = this.state.userFormPlayGolfFrequency;
+    userInformation.state = this.state.userForm.State;
+    userInformation.zipCode = this.state.userForm.zipCode;
+    authCtrl.updateUser(userInformation, function (err, message) {
+      if (err) {
+        this.setState({
+          modalText: err,
+          showModal: true,
+          enableUpdate: true
+        });
+      }
+      else if (message) {
+        this.setState({
+          modalText: message,
+          showModal: true,
+          enableUpdate: true
+        });
+      }
+      else {
+        this.setState({
+          modalText: 'Profile updated successfully',
+          showModal: true,
+          enableUpdate: true
+        });
+      }
+    }.bind(this))
   }
 
   render() {
@@ -207,7 +257,8 @@ export default class Profile extends Component {
                 labels={genderTypes.labels}
                 initialOptionIndex={genderTypes.initialIndex}
                 buttonStyle={{
-                  fontSize: 16
+                  fontSize: 18,
+                  padding: 5
                 }}
                 itemStyle={{
                   fontSize: 25,
@@ -235,7 +286,8 @@ export default class Profile extends Component {
                 labels={playGolfFrequencies.labels}
                 initialOptionIndex={playGolfFrequencies.initialIndex}
                 buttonStyle={{
-                  fontSize: 16
+                  fontSize: 18,
+                  padding: 5
                 }}
                 itemStyle={{
                   fontSize: 25,
