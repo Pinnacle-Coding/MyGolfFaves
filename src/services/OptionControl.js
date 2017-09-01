@@ -40,16 +40,16 @@ module.exports = {
     return genderTypes;
   },
 
+  getGolfFrequencyTypes: function () {
+    return golfFrequencyTypes;
+  },
+
   getGolfPartnerTypes: function () {
     return golfPartnerTypes;
   },
 
   getNotificationTypes: function () {
     return notificationTypes;
-  },
-
-  getGolfFrequencyTypes: function () {
-    return golfFrequencyTypes;
   },
 
   refresh: function(callback) {

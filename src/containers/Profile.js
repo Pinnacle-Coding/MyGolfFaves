@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, TouchableOpacity, Text, ScrollView, TextInput, Picker } from 'react-native';
+import { StyleSheet, View, TouchableOpacity, Text, ScrollView, TextInput, Picker, FlatList } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { Form, Field } from 'simple-react-form';
 import Modal from 'react-native-modal';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 import Spinner from 'react-native-loading-spinner-overlay';
 import SimplePicker from 'react-native-simple-picker';
 
@@ -22,15 +23,27 @@ export default class Profile extends Component {
     modalText: '',
     enableUpdate: true,
     showChangePassword: false,
-    userFormGender: 'M',
-    userFormPlayGolfFrequency: '1',
+    userFormNotificationTypes: []
   }; // Included: userForm, passwordForm
+
+  formatSelectList(golfPartners, selectedGolfPartners, keyName) {
+    var ret = [];
+    for (var i = 0; i < golfPartners.length; i++) {
+      var golfPartner = Object.assign({}, golfPartners[i]);
+      golfPartner.key = golfPartner[keyName];
+      golfPartner.selected =  selectedGolfPartners.indexOf(golfPartner.key) > -1;
+      ret.push(golfPartner);
+    }
+    return ret;
+  }
 
   componentDidMount() {
     this.setState({
       userForm: authCtrl.getUser(),
       userFormGender: authCtrl.getUser().genderAbbr,
       userFormPlayGolfFrequency: authCtrl.getUser().playGolfFrequencyID,
+      userFormGolfPartners: this.formatSelectList(optionCtrl.getGolfPartnerTypes(), authCtrl.getUser()['lstGolfPartnerID'].split(','), 'golfPartnerID'),
+      userFormNotificationTypes: this.formatSelectList(optionCtrl.getNotificationTypes(), authCtrl.getUser()['lstNotificationTypeID'].split(','), 'notificationTypeID'),
       passwordForm: {
         currentPassword: '',
         newPassword: '',
@@ -62,21 +75,39 @@ export default class Profile extends Component {
     return menu;
   }
 
-  updateUser() {
-
-  }
-
   unzipOptionsLabels(arr, optionName, labelName, initialOption) {
     var ret = {
       options: [],
       labels: []
     };
     for (var i = 0; i < arr.length; i++) {
-      ret.options.unshift(arr[i][optionName]);
-      ret.labels.unshift(arr[i][labelName]);
+      ret.options.push(arr[i][optionName]);
+      ret.labels.push(arr[i][labelName]);
     }
     ret.initialIndex = ret.options.indexOf(initialOption);
     return ret;
+  }
+
+  selectItem(item) {
+    item.selected = !item.selected;
+    // Re-render by accessing state but not changing it
+    this.setState({
+      showChangePassword: this.state.showChangePassword
+    });
+  }
+
+  isTextNotificationSelected() {
+    for (var i = 0; i < this.state.userFormNotificationTypes.length; i++) {
+      var notificationType = this.state.userFormNotificationTypes[i];
+      if (notificationType.notificationType === 'Text Message') {
+        return notificationType.selected;
+      }
+    }
+    return false;
+  }
+
+  updateUser() {
+    // TODO: Compile forms and submit to AuthControl
   }
 
   render() {
@@ -219,7 +250,81 @@ export default class Profile extends Component {
               />
 
               <Text style={styles.inputLabel}>With whom do you most often play golf?</Text>
+              <FlatList
+                style={{paddingTop: 10}}
+                data={this.state.userFormGolfPartners}
+                renderItem={
+                  ({item}) =>
+                  <View style={{padding: 10, flexDirection: 'row'}}>
+                    {
+                      renderIf(!item.selected)(
+                        <TouchableOpacity onPress={() => this.selectItem(item)}>
+                          <Icon name="check-box-outline-blank" size={40} color="#ccc"/>
+                        </TouchableOpacity>
+                      )
+                    }
+                    {
+                      renderIf(item.selected)(
+                        <TouchableOpacity onPress={() => this.selectItem(item)}>
+                          <Icon name="check-box" size={40} color="#ccc"/>
+                        </TouchableOpacity>
+                      )
+                    }
+                    <TouchableOpacity onPress={() => this.selectItem(item)}>
+                      <View style={{flex: 1}}>
+                        <Text style={{fontFamily:'OpenSans-Light', fontSize: 20, paddingLeft: 10, paddingTop: 5}}>
+                          {item.golfPartner}
+                        </Text>
+                      </View>
+                    </TouchableOpacity>
+                  </View>
+                }
+              />
 
+              <Text style={styles.inputLabel}>Which method(s) of notification do you prefer?</Text>
+              <FlatList
+                style={{paddingTop: 10}}
+                data={this.state.userFormNotificationTypes}
+                renderItem={
+                  ({item}) =>
+                  <View style={{padding: 10, flexDirection: 'row'}}>
+                    {
+                      renderIf(!item.selected)(
+                        <TouchableOpacity onPress={() => this.selectItem(item)}>
+                          <Icon name="check-box-outline-blank" size={40} color="#ccc"/>
+                        </TouchableOpacity>
+                      )
+                    }
+                    {
+                      renderIf(item.selected)(
+                        <TouchableOpacity onPress={() => this.selectItem(item)}>
+                          <Icon name="check-box" size={40} color="#ccc"/>
+                        </TouchableOpacity>
+                      )
+                    }
+                    <TouchableOpacity onPress={() => this.selectItem(item)}>
+                      <View style={{flex: 1, flexWrap: 'wrap'}}>
+                        <Text style={{fontFamily:'OpenSans-Light', fontSize: 20, paddingLeft: 10, paddingTop: 5}}>
+                          {item.notificationType}
+                        </Text>
+                      </View>
+                    </TouchableOpacity>
+                  </View>
+                }
+              />
+
+              {
+                renderIf(this.isTextNotificationSelected())(
+                  <View>
+                    <Text style={styles.inputLabel}>Mobile Phone</Text>
+                    <Field
+                      fieldName='mobilePhone'
+                      placeholder='000.111.2222'
+                      returnKeyType='next'
+                      type={TextField}/>
+                  </View>
+                )
+              }
 
               <Text style={styles.inputLabel}>Username</Text>
               <Field
@@ -283,16 +388,6 @@ const styles = StyleSheet.create({
   inputLabel: {
     fontFamily: 'OpenSans-Regular',
     fontSize: 18
-  },
-  textField: {
-    opacity: 0.9,
-    marginTop: 5,
-    marginBottom: 15,
-    paddingHorizontal: 10,
-    borderStyle: 'solid',
-    borderColor: 'lightgray',
-    borderWidth: 1,
-    backgroundColor: '#FFF'
   },
   pickerField: {
     lineHeight: 50,
