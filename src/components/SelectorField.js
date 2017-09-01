@@ -19,7 +19,6 @@ export default class TextField extends Component {
             placeholder={this.props.passProps.placeholder}
             onSubmitEditing={this.props.passProps.onSubmitEditing}
             value={this.props.value}
-            style={styles.textField}
           />
         </ModalSelector>
       </View>

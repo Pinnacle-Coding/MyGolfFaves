@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, TouchableOpacity, Text, ScrollView } from 'react-native';
+import { StyleSheet, View, TouchableOpacity, Text, ScrollView, TextInput, Picker } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { Form, Field } from 'simple-react-form';
 import Modal from 'react-native-modal';
 import Spinner from 'react-native-loading-spinner-overlay';
+import SimplePicker from 'react-native-simple-picker';
 
 import Header from '../components/Header.js';
 import TextField from '../components/TextField.js';
+import SecureTextField from '../components/SecureTextField.js';
 import SelectorField from '../components/SelectorField.js';
 
 import renderIf from '../utils/renderif.js';
@@ -19,8 +21,23 @@ export default class Profile extends Component {
     showModal: false,
     modalText: '',
     enableUpdate: true,
-    showChangePassword: false
-  };
+    showChangePassword: false,
+    userFormGender: 'M',
+    userFormPlayGolfFrequency: '1',
+  }; // Included: userForm, passwordForm
+
+  componentDidMount() {
+    this.setState({
+      userForm: authCtrl.getUser(),
+      userFormGender: authCtrl.getUser().genderAbbr,
+      userFormPlayGolfFrequency: authCtrl.getUser().playGolfFrequencyID,
+      passwordForm: {
+        currentPassword: '',
+        newPassword: '',
+        verifyPassword: ''
+      }
+    });
+  }
 
   togglePassword() {
     this.setState({
@@ -49,7 +66,24 @@ export default class Profile extends Component {
 
   }
 
+  unzipOptionsLabels(arr, optionName, labelName, initialOption) {
+    var ret = {
+      options: [],
+      labels: []
+    };
+    for (var i = 0; i < arr.length; i++) {
+      ret.options.unshift(arr[i][optionName]);
+      ret.labels.unshift(arr[i][labelName]);
+    }
+    ret.initialIndex = ret.options.indexOf(initialOption);
+    return ret;
+  }
+
   render() {
+
+    var genderTypes = this.unzipOptionsLabels(optionCtrl.getGenderTypes(), 'genderAbbr', 'genderDescr', this.state.userFormGender);
+    var playGolfFrequencies = this.unzipOptionsLabels(optionCtrl.getGolfFrequencyTypes(), 'playGolfFrequencyID', 'playGolfFrequency', this.state.userFormPlayGolfFrequency);
+
     return (
       <View>
 
@@ -129,12 +163,63 @@ export default class Profile extends Component {
                 type={TextField}/>
 
               <Text style={styles.inputLabel}>Gender</Text>
-              <Field
-                fieldName='gender'
-                width={200}
-                data={this.formatOptions(optionCtrl.getGenderTypes(), 'Gender', 'genderDescr')}
-                initValue='Male'
-                type={SelectorField}/>
+                <Text
+                  style={styles.pickerField}
+                  onPress={() => {
+                    this.refs.genderPicker.show();
+                  }}
+                >
+                  {genderTypes.labels[genderTypes.options.indexOf(this.state.userFormGender)]}
+                </Text>
+              <SimplePicker
+                ref={'genderPicker'}
+                options={genderTypes.options}
+                labels={genderTypes.labels}
+                initialOptionIndex={genderTypes.initialIndex}
+                buttonStyle={{
+                  fontSize: 16
+                }}
+                itemStyle={{
+                  fontSize: 25,
+                  fontWeight: 'bold'
+                }}
+                onSubmit={(option) => {
+                  this.setState({
+                    userFormGender: option,
+                  });
+                }}
+              />
+
+              <Text style={styles.inputLabel}>How often do you play golf?</Text>
+                <Text
+                  style={styles.pickerField}
+                  onPress={() => {
+                    this.refs.playGolfFrequencyPicker.show();
+                  }}
+                >
+                  {playGolfFrequencies.labels[playGolfFrequencies.options.indexOf(this.state.userFormPlayGolfFrequency)]}
+                </Text>
+              <SimplePicker
+                ref={'playGolfFrequencyPicker'}
+                options={playGolfFrequencies.options}
+                labels={playGolfFrequencies.labels}
+                initialOptionIndex={playGolfFrequencies.initialIndex}
+                buttonStyle={{
+                  fontSize: 16
+                }}
+                itemStyle={{
+                  fontSize: 25,
+                  fontWeight: 'bold'
+                }}
+                onSubmit={(option) => {
+                  this.setState({
+                    userFormPlayGolfFrequency: option,
+                  });
+                }}
+              />
+
+              <Text style={styles.inputLabel}>With whom do you most often play golf?</Text>
+
 
               <Text style={styles.inputLabel}>Username</Text>
               <Field
@@ -159,16 +244,16 @@ export default class Profile extends Component {
                     <Field
                       fieldName='currentPassword'
                       returnKeyType='next'
-                      type={TextField}/>
+                      type={SecureTextField}/>
                     <Text style={styles.inputLabel}>New Password</Text>
                     <Field
                       fieldName='newPassword'
                       returnKeyType='next'
-                      type={TextField}/>
+                      type={SecureTextField}/>
                     <Text style={styles.inputLabel}>Verify Password</Text>
                     <Field
                       fieldName='verifyPassword'
-                      type={TextField}/>
+                      type={SecureTextField}/>
                   </View>
                 </Form>
               </View>
@@ -198,5 +283,28 @@ const styles = StyleSheet.create({
   inputLabel: {
     fontFamily: 'OpenSans-Regular',
     fontSize: 18
+  },
+  textField: {
+    opacity: 0.9,
+    marginTop: 5,
+    marginBottom: 15,
+    paddingHorizontal: 10,
+    borderStyle: 'solid',
+    borderColor: 'lightgray',
+    borderWidth: 1,
+    backgroundColor: '#FFF'
+  },
+  pickerField: {
+    lineHeight: 50,
+    opacity: 0.9,
+    marginTop: 5,
+    marginBottom: 15,
+    paddingHorizontal: 10,
+    borderStyle: 'solid',
+    borderColor: 'lightgray',
+    borderWidth: 1,
+    backgroundColor: '#FFF',
+    fontSize: 20,
+    fontFamily: 'OpenSans-Light'
   }
 });

@@ -89,7 +89,7 @@ module.exports = {
               }
               else {
                 notificationTypes = result.Rows;
-                sendRequest('http://business.mygolffaves.com/ws/mobilePublicService.cfc?method=getNotificationType&UID=1&PWD=mob!leMGF', function (err, result) {
+                sendRequest('http://business.mygolffaves.com/ws/mobilePublicService.cfc?method=getPlayGolfFrequency&UID=1&PWD=mob!leMGF', function (err, result) {
                   if (err) {
                     callback(err, null);
                   }

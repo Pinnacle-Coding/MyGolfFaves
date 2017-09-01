@@ -299,7 +299,7 @@ export default class FavoriteGolfCourses extends Component {
               <ModalSelector
                 style={{paddingTop: 2, width: 200}}
                 data={citiesMenu}
-                initValue={this.state.selectedCity}
+                initValue='Las Vegas'
                 onChange={(option) => this.getLocationFromCity(option.label)}>
                 <TextInput
                   style={{borderWidth:1, borderColor:'#ccc', padding:10, height:30}}
