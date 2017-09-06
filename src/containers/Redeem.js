@@ -106,18 +106,22 @@ export default class Redeem extends Component {
           </View>
           <Form state={this.state.form} onChange={(state) => this.setState({form : state})}>
             <View>
-              <Field
-                fieldName='redemptionCode'
-                placeholder='Redemption Code'
-                returnKeyType='next'
-                onSubmitEditing={() => focusTextInput(this.refs.redemptionAmount)}
-                type={TextField}/>
-              <Field
-                ref='redemptionAmount'
-                fieldName='redemptionAmount'
-                placeholder='Amount'
-                keyboardType='numeric'
-                type={TextField}/>
+              <Text style={styles.inputLabel}>Redemption Code</Text>
+              <View style={{marginHorizontal: 120}}>
+                <Field
+                  fieldName='redemptionCode'
+                  returnKeyType='next'
+                  onSubmitEditing={() => focusTextInput(this.refs.redemptionAmount)}
+                  type={TextField}/>
+              </View>
+              <Text style={styles.inputLabel}>Amount</Text>
+              <View style={{marginHorizontal: 120}}>
+                <Field
+                  ref='redemptionAmount'
+                  fieldName='redemptionAmount'
+                  keyboardType='numeric'
+                  type={TextField}/>
+              </View>
             </View>
           </Form>
           <TouchableOpacity
@@ -158,5 +162,10 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     alignSelf: 'stretch',
     justifyContent: 'center'
+  },
+  inputLabel: {
+    fontFamily: 'OpenSans-Regular',
+    fontSize: 18,
+    textAlign: 'center'
   }
 });
