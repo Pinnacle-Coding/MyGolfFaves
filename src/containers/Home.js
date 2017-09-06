@@ -1,11 +1,22 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, ScrollView, Text, TouchableHighlight } from 'react-native';
-import Icon from 'react-native-vector-icons/MaterialIcons';
 import { Link } from 'react-router-native';
+import Icon from 'react-native-vector-icons/MaterialIcons';
+import Icon2 from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import Header from '../components/Header.js';
 
+import history from '../utils/history.js';
+
+var authCtrl = require('../services/AuthControl.js');
+
 export default class Home extends Component {
+
+  logout() {
+    authCtrl.logout();
+    history.replace('/login');
+  }
+
   render() {
     return (
       <View style={styles.container}>
@@ -66,6 +77,15 @@ export default class Home extends Component {
               </View>
             </View>
           </Link>
+          <TouchableHighlight onPress={() => this.logout()}>
+            <View style={styles.homeLinkAccented}>
+              <Icon2 name="logout-variant" size={50} color="#509E2f"/>
+              <View style={{paddingLeft: 10}}>
+                <Text style={styles.homeTitleText}>Logout</Text>
+                <Text style={styles.homeSubtitleText}>Sign out of your account</Text>
+              </View>
+            </View>
+          </TouchableHighlight>
         </ScrollView>
       </View>
     );
