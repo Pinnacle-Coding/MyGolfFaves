@@ -31,7 +31,7 @@ export default class Offer extends Component {
     affiliateCtrl.getAffiliate(companyID, function (err, message, company) {
       if (err) {
         this.setState({
-          modalText: err,
+          modalText: err.message,
           showModal: true
         });
       }
@@ -67,7 +67,7 @@ export default class Offer extends Component {
     offerCtrl.acceptOffer(authCtrl.getUser().memberID, authCtrl.getUser(), function (err, message) {
       if (err) {
         this.setState({
-          modalText: err,
+          modalText: err.message,
           showModal: true,
           enableOffer: true
         });

@@ -6,7 +6,7 @@ import Header from '../components/Header.js';
 export default class Rewards extends Component {
   render() {
     return (
-      <View style={styles.container}>
+      <View>
         <Header title="Rewards"/>
         <View style={{borderBottomColor:'gray', borderBottomWidth:1, borderStyle: 'solid', padding:0}}/>
         <View style={{
@@ -21,8 +21,4 @@ export default class Rewards extends Component {
   }
 }
 
-const styles = StyleSheet.create({
-  container: {
-
-  }
-});
+const styles = StyleSheet.create({});

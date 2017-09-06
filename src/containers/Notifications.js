@@ -41,11 +41,11 @@ export default class Notifications extends Component {
                     <Text style={{fontFamily: 'OpenSans-Regular', color: '#509E2F'}}>Redeemed on {this.formatDate(item.dateRedeemed)}</Text>
                   )
                 }
-                {
+                { /*
                   renderIf(!item.dateRedeemed)(
                     <Text style={{fontFamily: 'OpenSans-Regular', color: '#D12020'}}>Not redeemed yet</Text>
                   )
-                }
+                */ }
                 <View style={{borderBottomColor: 'lightgray', borderBottomWidth: 1, borderStyle: 'solid', padding: 10}}/>
               </View>
             }

@@ -6,6 +6,7 @@ import Modal from 'react-native-modal';
 import Header from '../components/Header.js';
 
 import history from '../utils/history.js';
+import renderIf from '../utils/renderif.js';
 
 var offerCtrl = require('../services/OfferControl.js');
 
@@ -29,7 +30,7 @@ export default class Wallet extends Component {
     offerCtrl.selectOffer(offerID, function (err, message) {
       if (err) {
         this.setState({
-          modalText: err,
+          modalText: err.message,
           showModal: true
         });
       }
@@ -61,6 +62,20 @@ export default class Wallet extends Component {
             </TouchableOpacity>
           </View>
         </Modal>
+
+        {
+          renderIf((offerCtrl.getMemberWallet().length === 0))(
+            <View style={{
+            justifyContent: 'center',
+            alignItems: 'center'}}>
+              <Text style={{
+                fontFamily:'OpenSans-Regular', fontSize: 20, paddingTop: 40}}
+              >
+                Your wallet is currently empty.
+              </Text>
+            </View>
+          )
+        }
 
         <ScrollView>
           <FlatList

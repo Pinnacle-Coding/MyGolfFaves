@@ -126,18 +126,18 @@ export default class Profile extends Component {
     userInformation.emailAddress = this.state.userForm.emailAddress;
     userInformation.firstName = this.state.userForm.firstName;
     userInformation.genderAbbr = this.state.userFormGender;
-    userInformation.golfPartnerID = formatSelectListToString(this.state.userFormGolfPartners);
+    userInformation.golfPartnerID = this.formatSelectListToString(this.state.userFormGolfPartners);
     userInformation.lastName = this.state.userForm.lastName;
     userInformation.memberID = this.state.userForm.memberID;
     userInformation.mobilePhone = this.state.userForm.mobilePhone;
-    userInformation.notificationTypeID = formatSelectListToString(this.state.userFormNotificationTypes);
+    userInformation.notificationTypeID = this.formatSelectListToString(this.state.userFormNotificationTypes);
     userInformation.playGolfFrequencyID = this.state.userFormPlayGolfFrequency;
     userInformation.state = this.state.userForm.State;
     userInformation.zipCode = this.state.userForm.zipCode;
     authCtrl.updateUser(userInformation, function (err, message) {
       if (err) {
         this.setState({
-          modalText: err,
+          modalText: err.message,
           showModal: true,
           enableUpdate: true
         });

@@ -43,7 +43,7 @@ export default class Redeem extends Component {
       offerCtrl.redeemOffer(authCtrl.getUser().memberID, authCtrl.getUser(), redemptionCode, redemptionAmount, (err, message) => {
         if (err) {
           this.setState({
-            modalText: err,
+            modalText: err.message,
             showModal: true,
             enableRedeem: true
           });

@@ -36,7 +36,7 @@ export default class Login extends Component {
     authCtrl.login(this.state.username, this.state.password, function(err, message) {
       if (err) {
         this.setState({
-          modalText: err,
+          modalText: err.message,
           showModal: true,
           enableLogin: true
         });
@@ -49,11 +49,6 @@ export default class Login extends Component {
         });
       }
       else {
-        this.setState({
-          username: '',
-          password: '',
-          enableLogin: true
-        });
         history.replace('/home');
       }
     }.bind(this));

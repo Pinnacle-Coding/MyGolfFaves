@@ -119,7 +119,7 @@ export default class FavoriteGolfCourses extends Component {
     affiliateCtrl.getNearbyAffiliates(authCtrl.getUser().memberID, this.state.locationLat, this.state.locationLong, radius, function (err, message, affiliates) {
       if (err) {
         this.setState({
-          modalText: err,
+          modalText: err.message,
           showModal: true,
           enableSearch: true
         });
@@ -190,7 +190,7 @@ export default class FavoriteGolfCourses extends Component {
     affiliateCtrl.saveNearbyAffliates(authCtrl.getUser().memberID, this.state.nearbyAffiliates, function (err, message) {
       if (err) {
         this.setState({
-          modalText: err,
+          modalText: err.message,
           showModal: true,
           enableSearch: true
         });

@@ -10,6 +10,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#ffffff',
     padding: 10,
     opacity: 0.9,
+    fontFamily:'OpenSans-Light',
     fontSize: 20
   }
 });
