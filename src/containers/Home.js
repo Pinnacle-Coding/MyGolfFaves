@@ -23,15 +23,6 @@ export default class Home extends Component {
         <Header title="Home"/>
         <View style={{borderBottomColor:'gray', borderBottomWidth:1, borderStyle: 'solid', padding:0}}/>
         <ScrollView>
-          <Link to='/profile'>
-            <View style={styles.homeLinkAccented}>
-              <Icon name="person" size={50} color="#509E2f"/>
-              <View style={{paddingLeft: 10}}>
-                <Text style={styles.homeTitleText}>My Profile</Text>
-                <Text style={styles.homeSubtitleText}>Update your personal profile</Text>
-              </View>
-            </View>
-          </Link>
           <Link to='/favoriteCourses'>
             <View style={styles.homeLink}>
               <Icon name="golf-course" size={50} color="#509E2f"/>
@@ -59,8 +50,17 @@ export default class Home extends Component {
               </View>
             </View>
           </Link>
-          <Link to='/notifications'>
+          <Link to='/profile'>
             <View style={styles.homeLinkAccented}>
+              <Icon name="person" size={50} color="#509E2f"/>
+              <View style={{paddingLeft: 10}}>
+                <Text style={styles.homeTitleText}>My Profile</Text>
+                <Text style={styles.homeSubtitleText}>Update your personal profile</Text>
+              </View>
+            </View>
+          </Link>
+          <Link to='/notifications'>
+            <View style={styles.homeLink}>
               <Icon name="notifications" size={50} color="#509E2f"/>
               <View style={{paddingLeft: 10}}>
                 <Text style={styles.homeTitleText}>My Notifications</Text>
@@ -69,7 +69,7 @@ export default class Home extends Component {
             </View>
           </Link>
           <Link to='/rewards'>
-            <View style={styles.homeLink}>
+            <View style={styles.homeLinkAccented}>
               <Icon name="redeem" size={50} color="#509E2f"/>
               <View style={{paddingLeft: 10}}>
                 <Text style={styles.homeTitleText}>My Rewards</Text>
@@ -78,7 +78,7 @@ export default class Home extends Component {
             </View>
           </Link>
           <TouchableHighlight onPress={() => this.logout()}>
-            <View style={styles.homeLinkAccented}>
+            <View style={styles.homeLink}>
               <Icon2 name="logout-variant" size={50} color="#509E2f"/>
               <View style={{paddingLeft: 10}}>
                 <Text style={styles.homeTitleText}>Logout</Text>

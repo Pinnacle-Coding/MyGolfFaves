@@ -27,6 +27,7 @@ export default class App extends Component {
   async componentDidMount() {
     await Font.loadAsync({
       'OpenSans-Regular': require('./assets/fonts/OpenSans-Regular.ttf'),
+      'OpenSans-Italic': require('./assets/fonts/OpenSans-Italic.ttf'),
       'OpenSans-Light': require('./assets/fonts/OpenSans-Light.ttf'),
     });
     this.setState({

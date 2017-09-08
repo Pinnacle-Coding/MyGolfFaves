@@ -15,37 +15,37 @@ var authCtrl = require('../services/AuthControl.js');
 var affiliateCtrl = require('../services/AffiliateControl.js');
 
 var citiesData = {
-  'Los Angeles': {
-    lat: 34.0522342,
-    long: -118.2436849
-  },
   'Las Vegas': {
     lat: 36.171,
     long: -115.1258
   },
-  'San Diego': {
-    lat: 32.7153292,
-    long: -117.1572551
-  },
-  'San Jose': {
-    lat: 37.3393857,
-    long: -121.8949555
-  },
-  'San Luis Obispo': {
-    lat: 35.2827524,
-    long: -120.6596156
+  'Los Angeles': {
+    lat: 34.0522342,
+    long: -118.2436849
   },
   'Palm Springs': {
     lat: 33.8302961,
     long: -116.5452921
   },
-  'Bakersfield': {
-    lat: 35.3732921,
-    long: -119.0187125
+  'Orange County': {
+    lat: 33.7175,
+    long: -117.8311
   },
-  'Salinas': {
-    lat: 36.6777372,
-    long: -121.6555013
+  'San Diego': {
+    lat: 32.7153292,
+    long: -117.1572551
+  },
+  'Phoenix': {
+    lat: 33.4484,
+    long: -112.0740
+  },
+  'Scottsdale': {
+    lat: 33.4942,
+    long: -111.9261
+  },
+  'Tucson': {
+    lat: 32.2217,
+    long: -110.9265
   }
 };
 
@@ -58,11 +58,26 @@ export default class FavoriteGolfCourses extends Component {
     locationLat: citiesData['Las Vegas'].lat,
     locationLong: citiesData['Las Vegas'].long,
     locationRadius: '50',
-    ignoreRadius: false,
     locationOption: 2,
+    ignoreRadius: false,
     nearbyAffiliates: [],
-    showSelectAll: true
+    showSelectAll: true,
+    optionsCollapsed: true
   };
+
+  componentDidMount() {
+    var zipcode = "" + authCtrl.getUser().zipCode;
+    if (zipcode in zipcodes) {
+      this.setState({
+        locationOption: 0,
+        selectedZipCode: authCtrl.getUser().zipCode
+      });
+      // Set state doesn't trigger until after componentDidMount, so we have to manually set these options
+      this.state.locationLat = zipcodes[zipcode].lat;
+      this.state.locationLong = zipcodes[zipcode].long;
+    }
+    this.getNearbyAffiliates();
+  }
 
   getLocationFromZipCode() {
     var zipcode = ""+this.state.selectedZipCode;
@@ -221,6 +236,7 @@ export default class FavoriteGolfCourses extends Component {
         citiesMenu.push(k);
       }
     }
+    citiesMenu.sort();
 
     return (
       <View style={{flex: 1, flexDirection: 'column'}}>
@@ -245,85 +261,114 @@ export default class FavoriteGolfCourses extends Component {
           <View style={styles.locationContainer}>
             <Text style={{paddingBottom: 5, textAlign: 'center', fontFamily:'OpenSans-Regular', fontSize: 24}}>Location Options</Text>
 
-            <Text style={{padding: 5, paddingLeft: 20, fontFamily:'OpenSans-Regular', fontSize: 16}}>{this.state.locationOption === 0 ? '\u2023' : '\u2022'} Location (click zip to change) </Text>
-            <TextInput
-              style={{borderWidth:1, borderColor:'#ccc', padding: 5, marginLeft: 35, lineHeight: 30, width: 120}}
-              placeholder="00000"
-              keyboardType = 'numeric'
-              onChangeText={(text) => this.setState({selectedZipCode: text})}
-              onEndEditing={() => this.getLocationFromZipCode()}
-              value={this.state.selectedZipCode} />
+            {
+              renderIf(!this.state.optionsCollapsed)(
+                <View>
+                  <Text style={{padding: 5, paddingLeft: 20, fontFamily:'OpenSans-Regular', fontSize: 16}}>{this.state.locationOption === 0 ? '\u2023' : '\u2022'} Location (click zip to change) </Text>
+                  <TextInput
+                    style={{borderWidth:1, borderColor:'#ccc', padding: 5, marginLeft: 35, lineHeight: 30, width: 120}}
+                    placeholder="00000"
+                    keyboardType = 'numeric'
+                    onChangeText={(text) => this.setState({selectedZipCode: text})}
+                    onEndEditing={() => this.getLocationFromZipCode()}
+                    value={this.state.selectedZipCode} />
 
-            <TouchableOpacity onPress={() => this.getCurrentLocation()}>
-              <Text style={{padding: 5, paddingLeft: 20, fontFamily:'OpenSans-Regular', fontSize: 16}}>{this.state.locationOption === 1 ? '\u2023' : '\u2022'} <Text style={{textDecorationLine: 'underline'}}>Use My Current Location</Text></Text>
-            </TouchableOpacity>
+                  <TouchableOpacity onPress={() => this.getCurrentLocation()}>
+                    <Text style={{padding: 5, paddingLeft: 20, fontFamily:'OpenSans-Regular', fontSize: 16}}>{this.state.locationOption === 1 ? '\u2023' : '\u2022'} <Text style={{textDecorationLine: 'underline'}}>Use My Current Location</Text></Text>
+                  </TouchableOpacity>
 
-            <View style={{flexDirection: 'row'}}>
-              <Text style={{padding: 5, paddingLeft: 20, fontFamily:'OpenSans-Regular', fontSize: 16}}>{this.state.locationOption === 2 ? '\u2023' : '\u2022'} </Text>
-              <Text
-                style={{borderWidth: 1, borderColor:'#ccc', paddingLeft: 5, lineHeight: 30, width: 200, fontFamily:'OpenSans-Regular', fontSize: 16}}
-                onPress={() => {
-                  this.refs.cityPicker.show();
-                }}
-              >
-                {this.state.selectedCity}
-              </Text>
-              <SimplePicker
-                ref={'cityPicker'}
-                options={citiesMenu}
-                labels={citiesMenu}
-                initialOptionIndex={1}
-                buttonStyle={{
-                  fontSize: 18,
-                  padding: 5
-                }}
-                itemStyle={{
-                  fontSize: 25,
-                  fontWeight: 'bold'
-                }}
-                onSubmit={(option) => this.getLocationFromCity(option)}
-              />
-            </View>
+                  <View style={{flexDirection: 'row'}}>
+                    <Text style={{padding: 5, paddingLeft: 20, fontFamily:'OpenSans-Regular', fontSize: 16}}>{this.state.locationOption === 2 ? '\u2023' : '\u2022'} </Text>
+                    <Text
+                      style={{borderWidth: 1, borderColor:'#ccc', paddingLeft: 5, lineHeight: 30, width: 200, fontFamily:'OpenSans-Regular', fontSize: 16}}
+                      onPress={() => {
+                        this.refs.cityPicker.show();
+                      }}
+                    >
+                      {this.state.selectedCity}
+                    </Text>
+                    <SimplePicker
+                      ref={'cityPicker'}
+                      options={citiesMenu}
+                      labels={citiesMenu}
+                      initialOptionIndex={0}
+                      buttonStyle={{
+                        fontSize: 18,
+                        padding: 5
+                      }}
+                      itemStyle={{
+                        fontSize: 25,
+                        fontWeight: 'bold'
+                      }}
+                      onSubmit={(option) => this.getLocationFromCity(option)}
+                    />
+                  </View>
 
-            <TouchableOpacity onPress={() => this.getLocationShowAll()}>
-              <Text style={{padding: 5, paddingLeft: 20, paddingBottom: 20, fontFamily:'OpenSans-Regular', fontSize: 16}}>{'\u2022'} <Text style={{textDecorationLine: 'underline'}}>{this.state.ignoreRadius ? 'Show Less' : 'Show All'}</Text></Text>
-            </TouchableOpacity>
+                  <TouchableOpacity onPress={() => this.getLocationShowAll()}>
+                    <Text style={{padding: 5, paddingLeft: 20, paddingBottom: 20, fontFamily:'OpenSans-Regular', fontSize: 16}}>{'\u2022'} <Text style={{textDecorationLine: 'underline'}}>{this.state.ignoreRadius ? 'Show Less' : 'Show All'}</Text></Text>
+                  </TouchableOpacity>
 
-            <View style={{borderBottomColor: 'black', borderBottomWidth: 1, borderStyle: 'solid', padding: 0, marginLeft: 20, marginRight: 20}}/>
+                  <View style={{borderBottomColor: 'black', borderBottomWidth: 1, borderStyle: 'solid', padding: 0, marginLeft: 20, marginRight: 20}}/>
 
-            <View style={{flexDirection: 'row'}}>
-              <Text style={{padding: 5, paddingLeft: 20, paddingTop: 15, fontFamily:'OpenSans-Regular', fontSize: 16}}>{'\u2022'} Search within </Text>
-              <Text
-                style={{borderWidth: 1, borderColor:'#ccc', paddingLeft: 5, marginTop: 10, lineHeight: 30, width: 50, fontFamily:'OpenSans-Regular', fontSize: 16}}
-                onPress={() => {
-                  this.refs.milesPicker.show();
-                }}
-              >
-                {this.state.locationRadius}
-              </Text>
-              <SimplePicker
-                ref={'milesPicker'}
-                options={milesMenu}
-                labels={milesMenu}
-                buttonStyle={{
-                  fontSize: 18,
-                  padding: 5
-                }}
-                itemStyle={{
-                  fontSize: 25,
-                  fontWeight: 'bold'
-                }}
-                onSubmit={(option) => {this.setState({locationRadius: option})}}
-              />
-              <Text style={{padding: 5, paddingTop: 15, fontFamily:'OpenSans-Regular', fontSize: 16}}> miles</Text>
-            </View>
+                  <View style={{flexDirection: 'row'}}>
+                    <Text style={{padding: 5, paddingLeft: 20, paddingTop: 15, fontFamily:'OpenSans-Regular', fontSize: 16}}>{'\u2022'} Search within </Text>
+                    <Text
+                      style={{borderWidth: 1, borderColor:'#ccc', paddingLeft: 5, marginTop: 10, lineHeight: 30, width: 50, fontFamily:'OpenSans-Regular', fontSize: 16}}
+                      onPress={() => {
+                        this.refs.milesPicker.show();
+                      }}
+                    >
+                      {this.state.locationRadius}
+                    </Text>
+                    <SimplePicker
+                      ref={'milesPicker'}
+                      options={milesMenu}
+                      labels={milesMenu}
+                      buttonStyle={{
+                        fontSize: 18,
+                        padding: 5
+                      }}
+                      itemStyle={{
+                        fontSize: 25,
+                        fontWeight: 'bold'
+                      }}
+                      onSubmit={(option) => {this.setState({locationRadius: option})}}
+                    />
+                    <Text style={{padding: 5, paddingTop: 15, fontFamily:'OpenSans-Regular', fontSize: 16}}> miles</Text>
+                  </View>
 
-            <TouchableOpacity
-              disabled={!this.state.enableSearch}
-              style={{marginTop: 15, marginLeft: 15, marginRight: 15, padding: 5, borderWidth: 1, borderStyle: 'solid'}}
-              onPress={() => this.getNearbyAffiliates()}>
-              <Text style={{fontSize: 16, fontFamily: 'OpenSans-Regular', textAlign: 'center'}}>GO</Text>
-            </TouchableOpacity>
+                  <TouchableOpacity
+                    disabled={!this.state.enableSearch}
+                    style={{marginTop: 15, marginLeft: 15, marginRight: 15, padding: 5, borderWidth: 1, borderStyle: 'solid'}}
+                    onPress={() => this.getNearbyAffiliates()}>
+                    <Text style={{fontSize: 16, fontFamily: 'OpenSans-Regular', textAlign: 'center'}}>GO</Text>
+                  </TouchableOpacity>
+
+                  <View style={{borderBottomColor: 'black', borderBottomWidth: 1, borderStyle: 'solid', padding: 0, marginTop: 15}}/>
+
+                  <TouchableOpacity
+                    onPress={() => this.setState({ optionsCollapsed: true })}>
+                    <Text
+                      style={{paddingTop: 10, textAlign: 'center', fontFamily:'OpenSans-Italic', fontSize: 14, textDecorationLine: 'underline'}}>
+                      Collapse
+                    </Text>
+                  </TouchableOpacity>
+
+                </View>
+              )
+            }
+
+            {
+              renderIf(this.state.optionsCollapsed)(
+                <TouchableOpacity
+                  onPress={() => this.setState({ optionsCollapsed: false })}>
+                  <Text
+                    style={{padding: 5, textAlign: 'center', fontFamily:'OpenSans-Italic', fontSize: 14, textDecorationLine: 'underline'}}>
+                    Display
+                  </Text>
+                </TouchableOpacity>
+              )
+            }
 
           </View>
 
@@ -348,7 +393,7 @@ export default class FavoriteGolfCourses extends Component {
             data={this.state.nearbyAffiliates}
             renderItem={
               ({item}) =>
-              <View style={{padding: 10, flexDirection: 'row'}}>
+              <View style={{paddingVertical: 5, flexDirection: 'row'}}>
                 {
                   renderIf(item.memberFavorite === 'true')(
                     <TouchableOpacity onPress={() => this.selectAffiliate(item)}>
@@ -364,7 +409,7 @@ export default class FavoriteGolfCourses extends Component {
                   )
                 }
                 <TouchableOpacity onPress={() => this.openLink(item)}>
-                  <Text style={{fontFamily:'OpenSans-Regular', fontSize: 18, paddingLeft: 10, paddingTop: 5}}>{item.companyName} <Text style={{fontFamily:'OpenSans-Regular', fontSize: 14}}>{item.distance}</Text></Text>
+                  <Text style={{fontFamily:'OpenSans-Regular', fontSize: 16, paddingLeft: 10, paddingTop: 10}}>{item.companyName} <Text style={{fontFamily:'OpenSans-Regular', fontSize: 14}}>{item.distance}</Text></Text>
                 </TouchableOpacity>
               </View>
             }

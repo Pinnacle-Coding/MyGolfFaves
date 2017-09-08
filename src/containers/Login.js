@@ -161,20 +161,20 @@ export default class Login extends Component {
             {
               renderIf(!this.state.rememberMe)(
                 <TouchableOpacity onPress={() => this.setState({ rememberMe: !this.state.rememberMe })}>
-                  <Icon name="check-box-outline-blank" size={40} color="#ccc"/>
+                  <Icon name="check-box-outline-blank" size={28} color="#ccc"/>
                 </TouchableOpacity>
               )
             }
             {
               renderIf(this.state.rememberMe)(
                 <TouchableOpacity onPress={() => this.setState({ rememberMe: !this.state.rememberMe })}>
-                  <Icon name="check-box" size={40} color="#ccc"/>
+                  <Icon name="check-box" size={28} color="#ccc"/>
                 </TouchableOpacity>
               )
             }
             <TouchableOpacity onPress={() => this.setState({ rememberMe: !this.state.rememberMe })}>
               <View style={{flex: 1}}>
-                <Text style={{fontFamily:'OpenSans-Light', fontSize: 20, paddingLeft: 10, paddingTop: 5}}>
+                <Text style={{fontFamily:'OpenSans-Regular', fontSize: 17, paddingLeft: 10, paddingTop: 2}}>
                   Remember Me
                 </Text>
               </View>
