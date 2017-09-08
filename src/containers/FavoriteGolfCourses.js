@@ -399,19 +399,19 @@ export default class FavoriteGolfCourses extends Component {
                 {
                   renderIf(item.memberFavorite === 'true')(
                     <TouchableOpacity onPress={() => this.selectAffiliate(item)}>
-                      <Icon name="check" size={40} color="#509E2F"/>
+                      <Icon name="check" size={32} color="#509E2F"/>
                     </TouchableOpacity>
                   )
                 }
                 {
                   renderIf(item.memberFavorite !== 'true')(
                     <TouchableOpacity onPress={() => this.selectAffiliate(item)}>
-                      <Icon name="add" size={40} color="#D12020"/>
+                      <Icon name="add" size={32} color="#D12020"/>
                     </TouchableOpacity>
                   )
                 }
                 <TouchableOpacity onPress={() => this.openLink(item)}>
-                  <Text style={{fontFamily:'OpenSans-Regular', fontSize: 16, paddingLeft: 10, paddingTop: 10}}>{item.companyName} <Text style={{fontFamily:'OpenSans-Regular', fontSize: 14}}>{item.distance}</Text></Text>
+                  <Text style={{fontFamily:'OpenSans-Regular', fontSize: 16, paddingLeft: 10, paddingTop: 5}}>{item.companyName} <Text style={{fontFamily:'OpenSans-Regular', fontSize: 14}}>{item.distance}</Text></Text>
                 </TouchableOpacity>
               </View>
             }
