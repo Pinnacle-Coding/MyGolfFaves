@@ -121,6 +121,7 @@ export default class Register extends Component {
                 <TextInput
                   ref="firstName"
                   style={textStyles.formText}
+                  underlineColorAndroid='transparent'
                   placeholder="First Name"
                   returnKeyType={"next"}
                   onChangeText={(text) => this.setState({firstName: text})}
@@ -131,6 +132,7 @@ export default class Register extends Component {
                 <TextInput
                   ref="lastName"
                   style={textStyles.formText}
+                  underlineColorAndroid='transparent'
                   placeholder="Last Name"
                   returnKeyType = {"next"}
                   onChangeText={(text) => this.setState({lastName: text})}
@@ -141,6 +143,7 @@ export default class Register extends Component {
                 <TextInput
                   ref="email"
                   style={textStyles.formText}
+                  underlineColorAndroid='transparent'
                   placeholder="Email Address"
                   returnKeyType = {"next"}
                   onChangeText={(text) => this.setState({email: text})}
@@ -151,6 +154,7 @@ export default class Register extends Component {
                 <TextInput
                   ref="confirmEmail"
                   style={textStyles.formText}
+                  underlineColorAndroid='transparent'
                   placeholder="Confirm Email"
                   returnKeyType = {"next"}
                   onChangeText={(text) => this.setState({confirmEmail: text})}
@@ -163,6 +167,7 @@ export default class Register extends Component {
                 <TextInput
                   ref="username"
                   style={textStyles.formText}
+                  underlineColorAndroid='transparent'
                   placeholder="Username"
                   returnKeyType = {"next"}
                   onChangeText={(text) => this.setState({username: text})}
@@ -173,6 +178,7 @@ export default class Register extends Component {
                 <TextInput
                   ref="password"
                   style={textStyles.formText}
+                  underlineColorAndroid='transparent'
                   placeholder="Password"
                   returnKeyType = {"next"}
                   secureTextEntry
@@ -184,6 +190,7 @@ export default class Register extends Component {
                 <TextInput
                   ref="confirmPassword"
                   style={textStyles.formText}
+                  underlineColorAndroid='transparent'
                   placeholder="Confirm Password"
                   secureTextEntry
                   onChangeText={(text) => this.setState({confirmPassword: text})}

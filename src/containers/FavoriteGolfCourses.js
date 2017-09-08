@@ -271,7 +271,9 @@ export default class FavoriteGolfCourses extends Component {
                     keyboardType = 'numeric'
                     onChangeText={(text) => this.setState({selectedZipCode: text})}
                     onEndEditing={() => this.getLocationFromZipCode()}
-                    value={this.state.selectedZipCode} />
+                    value={this.state.selectedZipCode}
+                    underlineColorAndroid='transparent'
+                  />
 
                   <TouchableOpacity onPress={() => this.getCurrentLocation()}>
                     <Text style={{padding: 5, paddingLeft: 20, fontFamily:'OpenSans-Regular', fontSize: 16}}>{this.state.locationOption === 1 ? '\u2023' : '\u2022'} <Text style={{textDecorationLine: 'underline'}}>Use My Current Location</Text></Text>

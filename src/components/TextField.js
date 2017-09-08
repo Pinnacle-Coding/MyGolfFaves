@@ -15,6 +15,7 @@ export default class TextField extends Component {
           onChangeText={this.props.onChange}
           value={this.props.value}
           style={styles.textField}
+          underlineColorAndroid='transparent'
         />
       </View>
     );

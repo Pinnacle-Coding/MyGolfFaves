@@ -16,6 +16,7 @@ export default class SecureTextField extends Component {
           onChangeText={this.props.onChange}
           value={this.props.value}
           style={styles.textField}
+          underlineColorAndroid='transparent'
         />
       </View>
     );

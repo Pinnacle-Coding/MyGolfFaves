@@ -144,6 +144,7 @@ export default class Login extends Component {
             ref='usernameInput'
             value={this.state.username}
             style={styles.inputField}
+            underlineColorAndroid='transparent'
           />
 
           <TextInput
@@ -154,6 +155,7 @@ export default class Login extends Component {
             ref='passwordInput'
             value={this.state.password}
             onChangeText={(text) => this.setState({password: text})}
+            underlineColorAndroid='transparent'
           />
 
 
@@ -199,6 +201,7 @@ export default class Login extends Component {
                   placeholder="Email Address"
                   returnKeyType="go"
                   style={styles.inputField}
+                  underlineColorAndroid='transparent'
                 />
 
                 <TouchableOpacity style={buttonStyles.solidGreenButton}>
