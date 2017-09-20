@@ -96,11 +96,11 @@ import textStyles from '../styles/text.js';
 const styles = StyleSheet.create({
   homeTitleText: {
     fontFamily:'OpenSans-Regular',
-    fontSize: 28
+    fontSize: 27
   },
   homeSubtitleText: {
     fontFamily:'OpenSans-Light',
-    fontSize: 20
+    fontSize: 17
   },
   homeLink: {
       backgroundColor: '#ffffff',

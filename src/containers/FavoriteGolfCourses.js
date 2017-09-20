@@ -307,13 +307,17 @@ export default class FavoriteGolfCourses extends Component {
                   </View>
 
                   <TouchableOpacity onPress={() => this.getLocationShowAll()}>
-                    <Text style={{padding: 5, paddingLeft: 20, paddingBottom: 20, fontFamily:'OpenSans-Regular', fontSize: 16}}>{'\u2022'} <Text style={{textDecorationLine: 'underline'}}>{this.state.ignoreRadius ? 'Show Less' : 'Show All'}</Text></Text>
+                    <Text style={{padding: 5, paddingLeft: 20, fontFamily:'OpenSans-Regular', fontSize: 16}}>{'\u2022'} <Text style={{textDecorationLine: 'underline'}}>{this.state.ignoreRadius ? 'Show Less' : 'Show All'}</Text></Text>
                   </TouchableOpacity>
 
-                  <View style={{borderBottomColor: 'black', borderBottomWidth: 1, borderStyle: 'solid', padding: 0, marginLeft: 20, marginRight: 20}}/>
+                  {
+                    /*
+                    <View style={{borderBottomColor: 'black', borderBottomWidth: 1, borderStyle: 'solid', padding: 0, marginLeft: 20, marginRight: 20}}/>
+                    */
+                  }
 
                   <View style={{flexDirection: 'row'}}>
-                    <Text style={{padding: 5, paddingLeft: 20, paddingTop: 15, fontFamily:'OpenSans-Regular', fontSize: 16}}>{'\u2022'} Search within </Text>
+                    <Text style={{padding: 5, paddingLeft: 20, fontFamily:'OpenSans-Regular', fontSize: 16}}>{'\u2022'} Search within </Text>
                     <Text
                       style={{borderWidth: 1, borderColor:'#ccc', paddingLeft: 5, marginTop: 10, lineHeight: 30, width: 50, fontFamily:'OpenSans-Regular', fontSize: 16}}
                       onPress={() => {
@@ -341,12 +345,16 @@ export default class FavoriteGolfCourses extends Component {
 
                   <TouchableOpacity
                     disabled={!this.state.enableSearch}
-                    style={{marginTop: 15, marginLeft: 15, marginRight: 15, padding: 5, borderWidth: 1, borderStyle: 'solid'}}
+                    style={{marginTop: 15, marginLeft: 60, marginRight: 60, padding: 5, borderWidth: 1, borderStyle: 'solid'}}
                     onPress={() => this.getNearbyAffiliates()}>
                     <Text style={{fontSize: 16, fontFamily: 'OpenSans-Regular', textAlign: 'center'}}>GO</Text>
                   </TouchableOpacity>
 
-                  <View style={{borderBottomColor: 'black', borderBottomWidth: 1, borderStyle: 'solid', padding: 0, marginTop: 15}}/>
+                  {
+                    /*
+                    <View style={{borderBottomColor: 'black', borderBottomWidth: 1, borderStyle: 'solid', padding: 0, marginTop: 15}}/>
+                     */
+                  }
 
                   <TouchableOpacity
                     onPress={() => this.setState({ optionsCollapsed: true })}>
@@ -376,16 +384,20 @@ export default class FavoriteGolfCourses extends Component {
 
           {
             renderIf(this.state.showSelectAll)(
-              <TouchableOpacity style={buttonStyles.fringedGreenButton} onPress={() => this.selectAllAffiliates()}>
-                <Text style={buttonStyles.fringedGreenButtonText}>SELECT ALL</Text>
+              <TouchableOpacity
+                style={{marginTop: 15, marginLeft: 60, marginRight: 60, padding: 5, borderWidth: 1, borderStyle: 'solid', borderColor:'#509E2F'}}
+                onPress={() => this.selectAllAffiliates()}>
+                <Text style={{fontSize: 16, fontFamily: 'OpenSans-Regular', textAlign: 'center', color:'#509E2F'}}>SELECT ALL</Text>
               </TouchableOpacity>
             )
           }
 
           {
             renderIf(!this.state.showSelectAll)(
-              <TouchableOpacity style={buttonStyles.fringedRedButton} onPress={() => this.selectAllAffiliates()}>
-                <Text style={buttonStyles.fringedRedButtonText}>CLEAR ALL</Text>
+              <TouchableOpacity
+                style={{marginTop: 15, marginLeft: 60, marginRight: 60, padding: 5, borderWidth: 1, borderStyle: 'solid', borderColor: '#D12020'}}
+                onPress={() => this.selectAllAffiliates()}>
+                <Text style={{fontSize: 16, fontFamily: 'OpenSans-Regular', textAlign: 'center', color: '#D12020'}}>CLEAR ALL</Text>
               </TouchableOpacity>
             )
           }

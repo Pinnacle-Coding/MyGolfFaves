@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, TouchableHighlight } from 'react-native';
+import { StyleSheet, View, TouchableHighlight, Platform } from 'react-native';
 import NavigationBar from 'react-native-navbar';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
@@ -20,7 +20,7 @@ export default class Header extends Component {
           */
         }
         {
-          <NavigationBar
+          <NavigationBar // Buffer
             containerStyle={styles.navbar}
             title={{
               title: this.props.title,
@@ -43,7 +43,7 @@ import textStyles from '../styles/text.js';
 const styles = StyleSheet.create({
   navbar: {
     backgroundColor: '#ffffff',
-    paddingTop: 10,
+    paddingTop: (Platform.OS === 'ios') ? 10 : 30,
     paddingBottom: 20
   }
 });

@@ -5,6 +5,11 @@
     "slug": "mygolffaves",
     "privacy": "unlisted",
     "sdkVersion": "20.0.0",
+    "androidStatusBar": {
+      "barStyle": "light-content",
+      "backgroundColor": "#999999"
+    },
+    "androidStatusBarColor": "#999999",
     "version": "1.0.0",
     "orientation": "portrait",
     "primaryColor": "#cccccc",

@@ -130,10 +130,12 @@ export default class Login extends Component {
           keyboardOpeningTime={0}
           scrollEnabled={true}>
           <View flexDirection="row" style={styles.topText}>
-            <Text style={{fontSize: 17, fontFamily: 'OpenSans-Regular'}}>Don't have an account? </Text>
-            <TouchableOpacity onPress={() => {history.push('/register')}}>
-              <Text style={styles.greenHighlightText}>Create an Account</Text>
-            </TouchableOpacity>
+            <View style={{flex: 1}}>
+              <Text style={{fontSize: 17, fontFamily: 'OpenSans-Regular'}}>Don't have an account? </Text>
+              <TouchableOpacity onPress={() => {history.push('/register')}}>
+                <Text style={styles.greenHighlightText}>Create an Account</Text>
+              </TouchableOpacity>
+            </View>
           </View>
 
           <TextInput

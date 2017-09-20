@@ -34,7 +34,7 @@ export default class Notifications extends Component {
             renderItem={
               ({item}) =>
               <View style={{padding: 10}}>
-                <Text style={styles.itemTitle}>{item.companyName} - {item.offerTitle}</Text>
+                <Text style={styles.itemTitle}>{item.companyName}</Text>
                 <Text style={{fontFamily: 'OpenSans-Regular', color: '#509E2F', paddingTop: 5}}>Accepted on {this.formatDate(item.dateAccepted)}</Text>
                 {
                   renderIf(item.dateRedeemed)(
